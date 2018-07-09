@@ -215,32 +215,33 @@ rb_tree<node_type, key_type, alloc_type>::insert(node_type&& node) {
     node_ptr new_node = __allocator.allocate(size_type(1));
     __allocator.construct(new_node, node_type(node));
     int update = __insert_update(new_node);
+    node_ptr position;
 
-    if (update == 1) {
+    switch(update) {
 
-        if ( __equal(new_node->key, __begin->key) )
-            throw KeyError("Key already exists.");
+        case 0: position = insert_search(new_node->key);
 
-        __insert(new_node, __begin);
-        __begin = new_node;
-    }
+                if ( __equal(new_node->key, position->key) )
+                    throw KeyError("Key already exists.");
 
-    if (update == -1) {
+                __insert(new_node,  position);
+                break; 
 
-        if ( __equal(new_node->key, __end->key) )
-            throw KeyError("Key already exists.");
+        case 1: if ( __equal(new_node->key, __begin->key) )
+                    throw KeyError("Key already exists.");
 
-        __insert(new_node, __end);
-        __end = new_node;
-    }
+                __insert(new_node, __begin);
+                __begin = new_node;
+                break;
 
-    if (update == 0) {
-        node_ptr position = insert_search(new_node->key);
+        case -1: if ( __equal(new_node->key, __end->key) )
+                    throw KeyError("Key already exists.");
 
-        if ( __equal(new_node->key, position->key) )
-            throw KeyError("Key already exists.");
+                 __insert(new_node, __end);
+                 __end = new_node;
+                 break;
 
-        __insert(new_node,  position);
+        case 2: break;
     }
 
     __insert_process(new_node);
@@ -254,24 +255,36 @@ template < class node_type,
            class key_type,
            class alloc_type >
 node_ptr<node_type, key_type, alloc_type> rb_tree<node_type, key_type, alloc_type>::
-insert(node_ptr& position, const node_type& node) {
+insert(node_ptr& position, const_node_ref node) {
 
     node_ptr new_node = __allocator.allocate(1);
     __allocator.construct(new_node, node_type(node));
     int update = __insert_update(new_node);
 
-    if (update == 1) {
-        __insert(new_node, __begin);
-        __begin = new_node;
-    }
+    switch(update) {
 
-    if (update == -1) {
-        __insert(new_node, __end);
-        __end = new_node;
-    }
+        case 0: if ( __equal(new_node->key, position->key) )
+                    throw KeyError("Key already exists.");
 
-    if (update == 0)
-        __insert(new_node, position);
+                __insert(new_node,  position);
+                break; 
+
+        case 1: if ( __equal(new_node->key, __begin->key) )
+                    throw KeyError("Key already exists.");
+
+                __insert(new_node, __begin);
+                __begin = new_node;
+                break;
+
+        case -1: if ( __equal(new_node->key, __end->key) )
+                    throw KeyError("Key already exists.");
+
+                 __insert(new_node, __end);
+                 __end = new_node;
+                 break;
+
+        case 2: break;
+    }
 
     __insert_process(new_node);
     __size++;
@@ -300,6 +313,7 @@ rb_tree<node_type, key_type, alloc_type>::insert_search(const key_type& key) {
 
         else 
             it = it->right;
+
     }
 
     return result; 

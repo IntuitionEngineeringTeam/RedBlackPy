@@ -788,7 +788,6 @@ cdef class Series:
     #--------------------------------------------------------------------------------------------
     def __del__(self):
 
-        self.dtype_series.clear()
         self.dtype_series.__del__()
 
 

@@ -17,7 +17,7 @@
 namespace qseries {
 
 //-------------------------------------------------------------------------------------------
-// Template class for forward iterator over multiple trees
+// Template class of bidirectional iterator over multiple trees
 //-------------------------------------------------------------------------------------------
 template <class tree_type, class node_type>
 class trees_iterator : public std::iterator< std::bidirectional_iterator_tag,
