@@ -65,6 +65,6 @@ class TypeError : public BaseException {
 
 
 
-} // namespace astatistics
+} // namespace qseries
 
 #endif // __QSE
