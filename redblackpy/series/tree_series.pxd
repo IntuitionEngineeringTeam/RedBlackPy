@@ -22,8 +22,7 @@ import cython
 cimport cython
 
 
-cdef enum InterpolationError:
-
+cdef enum RedBlackPyError:
     INT_KEY_ERROR = -1
     EXT_KEY_ERROR = -2
     TYPE_ERROR = -3
@@ -56,7 +55,7 @@ cdef int equal_pair( const pair[rb_tree_ptr, iterator]& a_1,
 
 
 #--------------------------------------------------------------------------------------------
-# Base series definition
+# Base series class definition
 #--------------------------------------------------------------------------------------------
 cdef class __BaseTreeSeries:
 
@@ -78,6 +77,9 @@ cdef class __BaseTreeSeries:
     cdef __get_key_from_iter(self, iterator node)
 
 
+#--------------------------------------------------------------------------------------------
+# Series class definition
+#--------------------------------------------------------------------------------------------
 cdef class Series:
 
     # Attributes

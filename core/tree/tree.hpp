@@ -14,9 +14,12 @@
 #include "../exceptions/qs_exceptions.hpp"
 
 /*
-This file contains definition of a dynamic red-black trees. 
+This file contains definition of red-back tree template class.
+This template class has basics C++11 features. It has allocator(STL interface) as 
+template argument, so user could use any allocator wich provides std::allocator interface.
+To speed up insertion, deletion operations one can use pool allocators (Boost pool allocator, 
+for example).
 **/
-
 
 namespace qseries {
 
