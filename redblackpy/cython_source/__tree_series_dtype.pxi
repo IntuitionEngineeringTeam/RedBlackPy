@@ -11,8 +11,9 @@
 #------------------------------------------------------------------------------------------------------
 # Series based on trees
 #------------------------------------------------------------------------------------------------------
-
-cdef class TreeSeries_{DTYPE}(BaseTreeSeries):
+@cython.binding(False)
+@cython.internal
+cdef class __TreeSeries_{DTYPE}(__BaseTreeSeries):
 
     cdef interpolate_{DTYPE}     __interpolate
     cdef itermode_search_{DTYPE} __get_item
@@ -142,20 +143,20 @@ cdef class TreeSeries_{DTYPE}(BaseTreeSeries):
                  __deref_value_ptr_{DTYPE}(bounds.second) )
 
 
-    cpdef TreeSeries_{DTYPE} truncate(self, start, stop):
+    cpdef __TreeSeries_{DTYPE} truncate(self, start, stop):
 
         cdef iterator begin
         cdef iterator end
         cdef pair[node_ptr, node_ptr] bounds_start 
         cdef pair[node_ptr, node_ptr] bounds_end
-        cdef TreeSeries_{DTYPE} result
+        cdef __TreeSeries_{DTYPE} result
         #bug? cython 0.28.3 declare c_key as const, if do not declare it directly
         cdef c_pyobject c_start = c_pyobject(<PyObject*>start)
         cdef c_pyobject c_stop = c_pyobject(<PyObject*>stop)
 
-        result = TreeSeries_{DTYPE}.__new__( TreeSeries_{DTYPE}, 
-                                             interpolate=self.interpolate_type,
-                                             arithmetic=self.arithmetic )
+        result = __TreeSeries_{DTYPE}.__new__( __TreeSeries_{DTYPE}, 
+                                               interpolate=self.interpolate_type,
+                                               arithmetic=self.arithmetic )
 
         bounds_start = self.__index.tree_search(c_start)
         bounds_end = self.__index.tree_search(c_stop)
@@ -179,13 +180,13 @@ cdef class TreeSeries_{DTYPE}(BaseTreeSeries):
         return result
 
 
-    cpdef TreeSeries_{DTYPE} periodic(self, start, stop, step):
+    cpdef __TreeSeries_{DTYPE} periodic(self, start, stop, step):
 
-        cdef TreeSeries_{DTYPE} result
+        cdef __TreeSeries_{DTYPE} result
         cdef object it = start
-        result = TreeSeries_{DTYPE}.__new__( TreeSeries_{DTYPE},
-                                             interpolate=self.interpolate_type,
-                                             arithmetic=self.arithmetic )
+        result = __TreeSeries_{DTYPE}.__new__( __TreeSeries_{DTYPE},
+                                               interpolate=self.interpolate_type,
+                                               arithmetic=self.arithmetic )
 
         self.on_itermode()
 
@@ -198,15 +199,15 @@ cdef class TreeSeries_{DTYPE}(BaseTreeSeries):
         return result
 
 
-    cpdef TreeSeries_{DTYPE} map( self, method, tuple args=(), 
+    cpdef __TreeSeries_{DTYPE} map( self, method, tuple args=(), 
                                   dict kwargs={map_kwargs} ):
 
-        cdef TreeSeries_{DTYPE} result
+        cdef __TreeSeries_{DTYPE} result
         cdef tuple it
 
-        result = TreeSeries_{DTYPE}.__new__( TreeSeries_{DTYPE},
-                                             interpolate=self.interpolate_type,
-                                             arithmetic=self.arithmetic )
+        result = __TreeSeries_{DTYPE}.__new__( __TreeSeries_{DTYPE},
+                                               interpolate=self.interpolate_type,
+                                               arithmetic=self.arithmetic )
 
         for it in self.iteritems():
             result.insert( it[0], method(it[1], *args, **kwargs) )
@@ -242,13 +243,13 @@ cdef class TreeSeries_{DTYPE}(BaseTreeSeries):
 
     cpdef void on_itermode(self):
 
-        BaseTreeSeries.on_itermode(self)
+        __BaseTreeSeries.on_itermode(self)
         self.__get_item = self.__get_item_linear
 
 
     cpdef void off_itermode(self):
 
-        BaseTreeSeries.off_itermode(self)
+        __BaseTreeSeries.off_itermode(self)
         self.__get_item = self.__get_item_tree
 
 
@@ -352,33 +353,33 @@ cdef class TreeSeries_{DTYPE}(BaseTreeSeries):
     #--------------------------------------------------------------------------------------------
     # Emulating numeric types
     #--------------------------------------------------------------------------------------------
-    cpdef TreeSeries_{DTYPE} add(self, BaseTreeSeries other):
+    cpdef __TreeSeries_{DTYPE} add(self, __BaseTreeSeries other):
 
         return self.__arithmetic(self, other, __add_{DTYPE})
 
 
-    cpdef TreeSeries_{DTYPE} sub(self, BaseTreeSeries other):
+    cpdef __TreeSeries_{DTYPE} sub(self, __BaseTreeSeries other):
 
         return self.__arithmetic(self, other, __sub_{DTYPE})
 
 
-    cpdef TreeSeries_{DTYPE} mul(self, BaseTreeSeries other):
+    cpdef __TreeSeries_{DTYPE} mul(self, __BaseTreeSeries other):
 
         return self.__arithmetic(self, other, __mul_{DTYPE})
 
 
-    cpdef TreeSeries_{DTYPE} div(self, BaseTreeSeries other):
+    cpdef __TreeSeries_{DTYPE} div(self, __BaseTreeSeries other):
 
         return self.__arithmetic(self, other, __div_{DTYPE})
 
 
-    cpdef TreeSeries_{DTYPE} lshift(self, shift_param):
+    cpdef __TreeSeries_{DTYPE} lshift(self, shift_param):
 
         if isinstance(shift_param, int):
             return self.__lshift_int(shift_param)
 
 
-    cpdef TreeSeries_{DTYPE} rshift(self, shift_param):
+    cpdef __TreeSeries_{DTYPE} rshift(self, shift_param):
 
         if isinstance(shift_param, int):
             return self.__rshift_int(shift_param)
@@ -437,13 +438,13 @@ cdef class TreeSeries_{DTYPE}(BaseTreeSeries):
                                    error )
 
     
-    cdef TreeSeries_{DTYPE} __get_item_slice(self, key):
+    cdef __TreeSeries_{DTYPE} __get_item_slice(self, key):
 
         cdef c_pyobject c_key
         cdef node_ptr begin = deref( self.__index.begin() ) 
         cdef node_ptr end = deref( self.__index.back() )
-        cdef TreeSeries_{DTYPE} result
-        result = TreeSeries_{DTYPE}.__new__( TreeSeries_{DTYPE},
+        cdef __TreeSeries_{DTYPE} result
+        result = __TreeSeries_{DTYPE}.__new__( __TreeSeries_{DTYPE},
                                              interpolate=self.interpolate_type,
                                              arithmetic=self.arithmetic )
 
@@ -484,17 +485,17 @@ cdef class TreeSeries_{DTYPE}(BaseTreeSeries):
                                   key.step )
 
 
-    cdef TreeSeries_{DTYPE} __lshift_int(self, Py_ssize_t shift_param):
+    cdef __TreeSeries_{DTYPE} __lshift_int(self, Py_ssize_t shift_param):
 
-        cdef TreeSeries_{DTYPE} result
+        cdef __TreeSeries_{DTYPE} result
         cdef list delay_holder = []
         cdef tuple pair
         cdef Py_ssize_t count = 0
         cdef bool append_status = False
 
-        result = TreeSeries_{DTYPE}.__new__( TreeSeries_{DTYPE},
-                                             interpolate=self.interpolate_type,
-                                             arithmetic=self.arithmetic )
+        result = __TreeSeries_{DTYPE}.__new__( __TreeSeries_{DTYPE},
+                                               interpolate=self.interpolate_type,
+                                               arithmetic=self.arithmetic )
         if shift_param <= 0:
             raise ValueError("Shift parameter must be more than zero.")
 
@@ -513,17 +514,17 @@ cdef class TreeSeries_{DTYPE}(BaseTreeSeries):
         return result
 
 
-    cdef TreeSeries_{DTYPE} __rshift_int(self, Py_ssize_t shift_param):
+    cdef __TreeSeries_{DTYPE} __rshift_int(self, Py_ssize_t shift_param):
 
-        cdef TreeSeries_{DTYPE} result
+        cdef __TreeSeries_{DTYPE} result
         cdef list delay_holder = []
         cdef tuple pair
         cdef Py_ssize_t count = 0
         cdef bool append_status = False
 
-        result = TreeSeries_{DTYPE}.__new__( TreeSeries_{DTYPE},
-                                             interpolate=self.interpolate_type,
-                                             arithmetic=self.arithmetic )
+        result = __TreeSeries_{DTYPE}.__new__( __TreeSeries_{DTYPE},
+                                               interpolate=self.interpolate_type,
+                                               arithmetic=self.arithmetic )
         if isinstance(shift_param, int):
 
             if shift_param <= 0:
@@ -544,16 +545,16 @@ cdef class TreeSeries_{DTYPE}(BaseTreeSeries):
             return result
 
 
-    cdef TreeSeries_{DTYPE} __arithmetic_left( self, BaseTreeSeries other, 
-                                               arithmetic_{DTYPE} action ):
+    cdef __TreeSeries_{DTYPE} __arithmetic_left( self, __BaseTreeSeries other, 
+                                                 arithmetic_{DTYPE} action ):
 
         cdef {DTYPE} current
         cdef node_ptr node
         cdef object key
-        cdef TreeSeries_{DTYPE} result
-        result = TreeSeries_{DTYPE}.__new__( TreeSeries_{DTYPE},
-                                             interpolate=self.interpolate_type,
-                                             arithmetic=self.arithmetic )
+        cdef __TreeSeries_{DTYPE} result
+        result = __TreeSeries_{DTYPE}.__new__( __TreeSeries_{DTYPE},
+                                               interpolate=self.interpolate_type,
+                                               arithmetic=self.arithmetic )
         other.on_itermode()
 
         for node in deref(self.__index):
@@ -567,17 +568,17 @@ cdef class TreeSeries_{DTYPE}(BaseTreeSeries):
         return result
 
 
-    cdef TreeSeries_{DTYPE} __arithmetic_union( self, BaseTreeSeries other, 
-                                                arithmetic_{DTYPE} action ):
+    cdef __TreeSeries_{DTYPE} __arithmetic_union( self, __BaseTreeSeries other, 
+                                                  arithmetic_{DTYPE} action ):
 
         cdef {DTYPE} current
         cdef object key
         cdef trees_iterator[rb_tree, rb_node_valued] iterator
         cdef vector[rb_tree_ptr] trees = vector[rb_tree_ptr](2)
-        cdef TreeSeries_{DTYPE} result
-        result = TreeSeries_{DTYPE}.__new__( TreeSeries_{DTYPE},
-                                             interpolate=self.interpolate_type,
-                                             arithmetic=self.arithmetic )
+        cdef __TreeSeries_{DTYPE} result
+        result = __TreeSeries_{DTYPE}.__new__( __TreeSeries_{DTYPE},
+                                               interpolate=self.interpolate_type,
+                                               arithmetic=self.arithmetic )
         
         trees[0] = self.__index
         trees[1] = other.get_tree()

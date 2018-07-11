@@ -7,11 +7,7 @@
 #--------------------------------------------------------------------------------------------
 # Base class for series on trees
 #--------------------------------------------------------------------------------------------
-cdef class BaseTreeSeries:
-
-    cdef rb_tree_ptr __index
-    cdef node_ptr    __last_call
-    cdef bool        __iter_mode
+cdef class __BaseTreeSeries:
 
 
     def __init__(self):

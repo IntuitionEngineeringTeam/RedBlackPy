@@ -4,10 +4,10 @@
 #
 
 # distutils: language=c++
-# cython: binding=True
 # cython: boundscheck=False
 # cython: wraparound=False
-# cython: cdivision=True
+# cython: binding=False
+
 
 
 from libcpp cimport bool
@@ -23,7 +23,6 @@ from libcpp.utility cimport pair
 from libcpp.vector cimport vector
 from redblackpy.tree_cython_api.types_mapping cimport *
 from redblackpy.tree_cython_api cimport tree as tree
-import datetime as dt
 import pandas as pd
 
 import cython
@@ -32,12 +31,6 @@ cimport cython
 
 # Include base class and time series class with specialized type of value
 #--------------------------------------------------------------------------------------------
-cdef enum InterpolationError:
-
-    INT_KEY_ERROR = -1
-    EXT_KEY_ERROR = -2
-    TYPE_ERROR = -3
-
 include "../cython_source/c_pyobject.pxi"
 include "../cython_source/trees_iterator.pxi"
 include "../cython_source/base_tree_series.pxi"
@@ -58,10 +51,6 @@ cdef class Series:
     set item by key.
     """
 
-    cdef BaseTreeSeries dtype_series
-    cdef public   str name
-    cdef readonly str dtype
-
 
     def __init__( self, object index=None, object values=None, str dtype="float32", 
                   str name="Untitled", str interpolate="floor", extrapolate=0, 
@@ -77,102 +66,106 @@ cdef class Series:
         self.name = name
 
         if self.dtype == 'uint8':
-            self.dtype_series = TreeSeries_uint8_t.__new__( TreeSeries_uint8_t, index, 
-                                                            values, name, interpolate, 
-                                                            extrapolate, arithmetic )
+            self.dtype_series = __TreeSeries_uint8_t.__new__( __TreeSeries_uint8_t, 
+                                                              index, values, name, 
+                                                              interpolate, extrapolate, 
+                                                              arithmetic )
 
         elif self.dtype == 'uint16':
-            self.dtype_series = TreeSeries_uint16_t.__new__( TreeSeries_uint16_t, index, 
-                                                             values, name, interpolate, 
-                                                             extrapolate, arithmetic  )
+            self.dtype_series = __TreeSeries_uint16_t.__new__( __TreeSeries_uint16_t, 
+                                                               index, values, name, 
+                                                               interpolate, extrapolate, 
+                                                               arithmetic  )
 
         elif self.dtype == 'uint32':
-            self.dtype_series = TreeSeries_uint32_t.__new__( TreeSeries_uint32_t, index, 
-                                                             values, name, interpolate, 
-                                                             extrapolate, arithmetic  )
-
-        elif self.dtype == 'uint64':
-            self.dtype_series = TreeSeries_uint64_t.__new__( TreeSeries_uint64_t, index, 
-                                                             values, name, interpolate, 
-                                                             extrapolate, arithmetic  )
-
-        elif self.dtype == 'uint96':
-            self.dtype_series = TreeSeries_uint96_t.__new__( TreeSeries_uint96_t, index, 
-                                                             values, name, interpolate, 
-                                                             extrapolate, arithmetic  )
-
-        elif self.dtype == 'uint128':
-            self.dtype_series = TreeSeries_uint128_t.__new__( TreeSeries_uint128_t, index, 
-                                                              values, name, interpolate, 
-                                                              extrapolate, arithmetic  )
-
-        elif self.dtype == 'int8':
-            self.dtype_series = TreeSeries_int8_t.__new__( TreeSeries_int8_t, index, 
-                                                           values, name, interpolate, 
-                                                           extrapolate, arithmetic  )
-
-        elif self.dtype == 'int16':
-            self.dtype_series = TreeSeries_int16_t.__new__( TreeSeries_int16_t, index, 
-                                                            values, name, interpolate, 
-                                                            extrapolate, arithmetic  )
-
-        elif self.dtype == 'int32':
-            self.dtype_series = TreeSeries_int32_t.__new__( TreeSeries_int32_t, index, 
-                                                            values, name, interpolate, 
-                                                            extrapolate, arithmetic  )
-
-        elif self.dtype == 'int64':
-            self.dtype_series = TreeSeries_int64_t.__new__( TreeSeries_int64_t, index, 
-                                                            values, name, interpolate, 
-                                                            extrapolate, arithmetic  )
-
-        elif self.dtype == 'int96':
-            self.dtype_series = TreeSeries_int96_t.__new__( TreeSeries_int96_t, index, 
-                                                            values, name, interpolate, 
-                                                            extrapolate, arithmetic  )
-
-        elif self.dtype == 'int128':
-            self.dtype_series = TreeSeries_int128_t.__new__( TreeSeries_int128_t, index, 
-                                                             values, name, interpolate, 
-                                                             extrapolate, arithmetic  )
-
-        elif self.dtype == 'float32':
-            self.dtype_series = TreeSeries_float32_t.__new__( TreeSeries_float32_t, index, 
-                                                              values, name, interpolate, 
-                                                              extrapolate, arithmetic  )
-
-        elif self.dtype == 'float64':
-            self.dtype_series = TreeSeries_float64_t.__new__( TreeSeries_float64_t, index, 
-                                                              values, name, interpolate, 
-                                                              extrapolate, arithmetic  )
-
-        elif self.dtype == 'float80':
-            self.dtype_series = TreeSeries_float80_t.__new__( TreeSeries_float80_t, index, 
-                                                              values, name, interpolate, 
-                                                              extrapolate, arithmetic  )
-
-        elif self.dtype == 'float96':
-            self.dtype_series = TreeSeries_float96_t.__new__( TreeSeries_float96_t, index, 
-                                                              values, name, interpolate, 
-                                                              extrapolate, arithmetic  )
-
-        elif self.dtype == 'float128':
-            self.dtype_series = TreeSeries_float128_t.__new__( TreeSeries_float128_t, index, 
+            self.dtype_series = __TreeSeries_uint32_t.__new__( __TreeSeries_uint32_t, index, 
                                                                values, name, interpolate, 
                                                                extrapolate, arithmetic  )
 
+        elif self.dtype == 'uint64':
+            self.dtype_series = __TreeSeries_uint64_t.__new__( __TreeSeries_uint64_t, index, 
+                                                               values, name, interpolate, 
+                                                               extrapolate, arithmetic  )
+
+        elif self.dtype == 'uint96':
+            self.dtype_series = __TreeSeries_uint96_t.__new__( __TreeSeries_uint96_t, index, 
+                                                               values, name, interpolate, 
+                                                               extrapolate, arithmetic  )
+
+        elif self.dtype == 'uint128':
+            self.dtype_series = __TreeSeries_uint128_t.__new__( __TreeSeries_uint128_t, index, 
+                                                                values, name, interpolate, 
+                                                                extrapolate, arithmetic  )
+
+        elif self.dtype == 'int8':
+            self.dtype_series = __TreeSeries_int8_t.__new__( __TreeSeries_int8_t, index, 
+                                                             values, name, interpolate, 
+                                                             extrapolate, arithmetic  )
+
+        elif self.dtype == 'int16':
+            self.dtype_series = __TreeSeries_int16_t.__new__( __TreeSeries_int16_t, index, 
+                                                              values, name, interpolate, 
+                                                              extrapolate, arithmetic  )
+
+        elif self.dtype == 'int32':
+            self.dtype_series = __TreeSeries_int32_t.__new__( __TreeSeries_int32_t, index, 
+                                                              values, name, interpolate, 
+                                                              extrapolate, arithmetic  )
+
+        elif self.dtype == 'int64':
+            self.dtype_series = __TreeSeries_int64_t.__new__( __TreeSeries_int64_t, index, 
+                                                              values, name, interpolate, 
+                                                              extrapolate, arithmetic  )
+
+        elif self.dtype == 'int96':
+            self.dtype_series = __TreeSeries_int96_t.__new__( __TreeSeries_int96_t, index, 
+                                                              values, name, interpolate, 
+                                                              extrapolate, arithmetic  )
+
+        elif self.dtype == 'int128':
+            self.dtype_series = __TreeSeries_int128_t.__new__( __TreeSeries_int128_t, index, 
+                                                               values, name, interpolate, 
+                                                               extrapolate, arithmetic  )
+
+        elif self.dtype == 'float32':
+            self.dtype_series = __TreeSeries_float32_t.__new__( __TreeSeries_float32_t, index, 
+                                                                values, name, interpolate, 
+                                                                extrapolate, arithmetic  )
+
+        elif self.dtype == 'float64':
+            self.dtype_series = __TreeSeries_float64_t.__new__( __TreeSeries_float64_t, index, 
+                                                                values, name, interpolate, 
+                                                                extrapolate, arithmetic  )
+
+        elif self.dtype == 'float80':
+            self.dtype_series = __TreeSeries_float80_t.__new__( __TreeSeries_float80_t, index, 
+                                                                values, name, interpolate, 
+                                                                extrapolate, arithmetic  )
+
+        elif self.dtype == 'float96':
+            self.dtype_series = __TreeSeries_float96_t.__new__( __TreeSeries_float96_t, 
+                                                                index, values, name, 
+                                                                interpolate, extrapolate, 
+                                                                arithmetic  )
+
+        elif self.dtype == 'float128':
+            self.dtype_series = __TreeSeries_float128_t.__new__( __TreeSeries_float128_t, 
+                                                                 index, values, name, 
+                                                                 interpolate, extrapolate, 
+                                                                 arithmetic  )
+
         elif self.dtype == 'object':
-            self.dtype_series = TreeSeries_object.__new__( TreeSeries_object, index, 
-                                                           values, name, interpolate, 
-                                                           extrapolate, arithmetic )
+            self.dtype_series = __TreeSeries_object.__new__( __TreeSeries_object, index, 
+                                                             values, name, interpolate, 
+                                                             extrapolate, arithmetic )
 
         elif self.dtype == 'str':
-            self.dtype_series = TreeSeries_object.__new__( TreeSeries_object, index, 
-                                                           values, name, interpolate, 
-                                                           extrapolate, arithmetic )
+            self.dtype_series = __TreeSeries_object.__new__( __TreeSeries_object, index, 
+                                                             values, name, interpolate, 
+                                                             extrapolate, arithmetic )
 
         else:
-            raise RuntimeError( "Unsupported data type {:}".format(dtype) )
+            raise TypeError( "Unsupported data type {:}".format(dtype) )
 
 
     def __cinit__(self):
@@ -237,7 +230,7 @@ cdef class Series:
         """
         self.dtype_series.insert_range(pairs)
 
-    
+
     @cython.embedsignature(True)
     cpdef void erase(self, key) except*:
         """
@@ -270,7 +263,14 @@ cdef class Series:
         """
         return self.dtype_series.keys()
 
-    
+
+    cdef rb_tree_ptr get_tree(self):
+        """
+        Returns tree pointer.
+        """ 
+        return self.dtype_series.get_tree()
+
+
     @cython.embedsignature(True)
     cpdef list values(self):
         """
@@ -287,14 +287,13 @@ cdef class Series:
         return self.dtype_series.items()
 
 
-    @cython.embedsignature(True)
     def iteritems(self):
         """
         Returns generator of tuples(key, value).
         """        
         return self.dtype_series.iteritems()
 
-    
+
     @cython.embedsignature(True)
     cpdef tuple floor(self, key):
         """
@@ -310,7 +309,7 @@ cdef class Series:
         Returns tuple (key', value') such that key <= key' 
         and series does not contain key'', key <= key'' < key'.
         """ 
-        return self.dtype_series.ceil()
+        return self.dtype_series.ceil(key)
 
 
     @cython.embedsignature(True)
@@ -390,7 +389,7 @@ cdef class Series:
 
 
     @cython.embedsignature(True)
-    cpdef void cast_dtype(self, str dtype):
+    cpdef void cast_dtype(self, str dtype) except*:
         """
         Cast values to specific dtype.
         """
@@ -399,110 +398,14 @@ cdef class Series:
         if self.dtype == 'uint8':
 
             if self.dtype_series is None:
-                self.dtype_series = TreeSeries_uint8_t.__new__( TreeSeries_uint8_t,
-                                                                name=self.name,
-                                                                interpolate=self.interpolation,
-                                                                extrapolate=self.extrapolation,
-                                                                arithmetic=self.arithmetic )
-
-            else:
-                new_series = TreeSeries_uint8_t.__new__( TreeSeries_uint8_t,
-                                                         name=self.name,
-                                                         interpolate=self.interpolation,
-                                                         extrapolate=self.extrapolation,
-                                                         arithmetic=self.arithmetic )
-                new_series.copy_data(self.dtype_series)
-                self.dtype_series.clear()
-                self.dtype_series = new_series
-
-
-        if self.dtype == 'uint16':
-
-            if self.dtype_series is None:
-                self.dtype_series = TreeSeries_uint16_t.__new__( TreeSeries_uint16_t,
-                                                                 name=self.name,
-                                                                 interpolate=self.interpolation,
-                                                                 extrapolate=self.extrapolation,
-                                                                 arithmetic=self.arithmetic )
-
-            else:
-                new_series = TreeSeries_uint16_t.__new__( TreeSeries_uint16_t, 
-                                                          name=self.name,
-                                                          interpolate=self.interpolation,
-                                                          extrapolate=self.extrapolation,
-                                                          arithmetic=self.arithmetic )
-                new_series.copy_data(self.dtype_series)
-                self.dtype_series.clear()
-                self.dtype_series = new_series
-
-        if self.dtype == 'uint32':
-
-            if self.dtype_series is None:
-                self.dtype_series = TreeSeries_uint32_t.__new__( TreeSeries_uint32_t, 
-                                                                 name=self.name,
-                                                                 interpolate=self.interpolation,
-                                                                 extrapolate=self.extrapolation,
-                                                                 arithmetic=self.arithmetic )
-
-            else:
-                new_series = TreeSeries_uint32_t.__new__( TreeSeries_uint32_t,
-                                                          name=self.name,
-                                                          interpolate=self.interpolation,
-                                                          extrapolate=self.extrapolation,
-                                                          arithmetic=self.arithmetic )
-                new_series.copy_data(self.dtype_series)
-                self.dtype_series.clear()
-                self.dtype_series = new_series
-
-        if self.dtype == 'uint64':
-
-            if self.dtype_series is None:
-                self.dtype_series = TreeSeries_uint64_t.__new__( TreeSeries_uint64_t,
-                                                                 name=self.name,
-                                                                 interpolate=self.interpolation,
-                                                                 extrapolate=self.extrapolation,
-                                                                 arithmetic=self.arithmetic )
-
-            else:
-                new_series = TreeSeries_uint64_t.__new__( TreeSeries_uint64_t,
-                                                          name=self.name,
-                                                          interpolate=self.interpolation,
-                                                          extrapolate=self.extrapolation,
-                                                          arithmetic=self.arithmetic )
-                new_series.copy_data(self.dtype_series)
-                self.dtype_series.clear()
-                self.dtype_series = new_series
-
-        if self.dtype == 'uint96':
-
-            if self.dtype_series is None:
-                self.dtype_series = TreeSeries_uint96_t.__new__( TreeSeries_uint96_t,
-                                                                 name=self.name,
-                                                                 interpolate=self.interpolation,
-                                                                 extrapolate=self.extrapolation,
-                                                                 arithmetic=self.arithmetic )
-
-            else:
-                new_series = TreeSeries_uint96_t.__new__( TreeSeries_uint96_t,
-                                                          name=self.name,
-                                                          interpolate=self.interpolation,
-                                                          extrapolate=self.extrapolation,
-                                                          arithmetic=self.arithmetic )
-                new_series.copy_data(self.dtype_series)
-                self.dtype_series.clear()
-                self.dtype_series = new_series
-
-        if self.dtype == 'uint128':
-
-            if self.dtype_series is None:
-                self.dtype_series = TreeSeries_uint128_t.__new__( TreeSeries_uint128_t,
+                self.dtype_series = __TreeSeries_uint8_t.__new__( __TreeSeries_uint8_t,
                                                                   name=self.name,
                                                                   interpolate=self.interpolation,
                                                                   extrapolate=self.extrapolation,
                                                                   arithmetic=self.arithmetic )
 
             else:
-                new_series = TreeSeries_uint128_t.__new__( TreeSeries_uint128_t,
+                new_series = __TreeSeries_uint8_t.__new__( __TreeSeries_uint8_t,
                                                            name=self.name,
                                                            interpolate=self.interpolation,
                                                            extrapolate=self.extrapolation,
@@ -511,208 +414,18 @@ cdef class Series:
                 self.dtype_series.clear()
                 self.dtype_series = new_series
 
-        if self.dtype == 'int8':
+
+        elif self.dtype == 'uint16':
 
             if self.dtype_series is None:
-                self.dtype_series = TreeSeries_int8_t.__new__( TreeSeries_int8_t,
-                                                               name=self.name,
-                                                               interpolate=self.interpolation,
-                                                               extrapolate=self.extrapolation,
-                                                               arithmetic=self.arithmetic )
-
-            else:
-                new_series = TreeSeries_int8_t.__new__( TreeSeries_int8_t, 
-                                                        name=self.name,
-                                                        interpolate=self.interpolation,
-                                                        extrapolate=self.extrapolation,
-                                                        arithmetic=self.arithmetic )
-                new_series.copy_data(self.dtype_series)
-                self.dtype_series.clear()
-                self.dtype_series = new_series
-
-
-        if self.dtype == 'int16':
-
-            if self.dtype_series is None:
-                self.dtype_series = TreeSeries_uint16_t.__new__( TreeSeries_int16_t,
-                                                                 name=self.name,
-                                                                 interpolate=self.interpolation,
-                                                                 extrapolate=self.extrapolation,
-                                                                 arithmetic=self.arithmetic )
-
-            else:
-                new_series = TreeSeries_int16_t.__new__( TreeSeries_int16_t,
-                                                         name=self.name,
-                                                         interpolate=self.interpolation,
-                                                         extrapolate=self.extrapolation,
-                                                         arithmetic=self.arithmetic )
-                new_series.copy_data(self.dtype_series)
-                self.dtype_series.clear()
-                self.dtype_series = new_series
-
-        if self.dtype == 'int32':
-
-            if self.dtype_series is None:
-                self.dtype_series = TreeSeries_int32_t.__new__( TreeSeries_int32_t,
-                                                                name=self.name,
-                                                                interpolate=self.interpolation,
-                                                                extrapolate=self.extrapolation,
-                                                                arithmetic=self.arithmetic )
-
-            else:
-                new_series = TreeSeries_int32_t.__new__( TreeSeries_int32_t,
-                                                         name=self.name,
-                                                         interpolate=self.interpolation,
-                                                         extrapolate=self.extrapolation,
-                                                         arithmetic=self.arithmetic )
-                new_series.copy_data(self.dtype_series)
-                self.dtype_series.clear()
-                self.dtype_series = new_series
-
-        if self.dtype == 'int64':
-
-            if self.dtype_series is None:
-                self.dtype_series = TreeSeries_int64_t.__new__( TreeSeries_int64_t,
-                                                                name=self.name,
-                                                                interpolate=self.interpolation,
-                                                                extrapolate=self.extrapolation,
-                                                                arithmetic=self.arithmetic )
-
-            else:
-                new_series = TreeSeries_int64_t.__new__( TreeSeries_int64_t,
-                                                         name=self.name,
-                                                         interpolate=self.interpolation,
-                                                         extrapolate=self.extrapolation,
-                                                         arithmetic=self.arithmetic )
-                new_series.copy_data(self.dtype_series)
-                self.dtype_series.clear()
-                self.dtype_series = new_series
-
-        if self.dtype == 'int96':
-
-            if self.dtype_series is None:
-                self.dtype_series = TreeSeries_int96_t.__new__( TreeSeries_int96_t,
-                                                                name=self.name,
-                                                                interpolate=self.interpolation,
-                                                                extrapolate=self.extrapolation,
-                                                                arithmetic=self.arithmetic )
-
-            else:
-                new_series = TreeSeries_int96_t.__new__( TreeSeries_int96_t,
-                                                         name=self.name,
-                                                         interpolate=self.interpolation,
-                                                         extrapolate=self.extrapolation,
-                                                         arithmetic=self.arithmetic )
-                new_series.copy_data(self.dtype_series)
-                self.dtype_series.clear()
-                self.dtype_series = new_series
-
-        if self.dtype == 'int128':
-
-            if self.dtype_series is None:
-                self.dtype_series = TreeSeries_int128_t.__new__( TreeSeries_int128_t,
-                                                                 name=self.name,
-                                                                 interpolate=self.interpolation,
-                                                                 extrapolate=self.extrapolation,
-                                                                 arithmetic=self.arithmetic )
-
-            else:
-                new_series = TreeSeries_int128_t.__new__( TreeSeries_int128_t,
-                                                          name=self.name,
-                                                          interpolate=self.interpolation,
-                                                          extrapolate=self.extrapolation,
-                                                          arithmetic=self.arithmetic )
-                new_series.copy_data(self.dtype_series)
-                self.dtype_series.clear()
-                self.dtype_series = new_series
-
-        if self.dtype == 'float32':
-
-            if self.dtype_series is None:
-                self.dtype_series = TreeSeries_float32_t.__new__( TreeSeries_float32_t,
-                                                                  name=self.name,
-                                                                  interpolate=self.interpolation,
-                                                                  extrapolate=self.extrapolation,
-                                                                  arithmetic=self.arithmetic )
-
-            else:
-                new_series = TreeSeries_float32_t.__new__( TreeSeries_float32_t,
-                                                           name=self.name,
-                                                           interpolate=self.interpolation,
-                                                           extrapolate=self.extrapolation,
-                                                           arithmetic=self.arithmetic )
-                new_series.copy_data(self.dtype_series)
-                self.dtype_series.clear()
-                self.dtype_series = new_series
-
-        if self.dtype == 'float64':
-
-            if self.dtype_series is None:
-                self.dtype_series = TreeSeries_float64_t.__new__( TreeSeries_float64_t,
-                                                                  name=self.name,
-                                                                  interpolate=self.interpolation,
-                                                                  extrapolate=self.extrapolation,
-                                                                  arithmetic=self.arithmetic )
-
-            else:
-                new_series = TreeSeries_float64_t.__new__( TreeSeries_float64_t,
-                                                           name=self.name,
-                                                           interpolate=self.interpolation,
-                                                           extrapolate=self.extrapolation,
-                                                           arithmetic=self.arithmetic )
-                new_series.copy_data(self.dtype_series)
-                self.dtype_series.clear()
-                self.dtype_series = new_series
-
-        if self.dtype == 'float80':
-
-            if self.dtype_series is None:
-                self.dtype_series = TreeSeries_float80_t.__new__( TreeSeries_float80_t,
-                                                                  name=self.name,
-                                                                  interpolate=self.interpolation,
-                                                                  extrapolate=self.extrapolation,
-                                                                  arithmetic=self.arithmetic )
-
-            else:
-                new_series = TreeSeries_float80_t.__new__( TreeSeries_float80_t,
-                                                           name=self.name,
-                                                           interpolate=self.interpolation,
-                                                           extrapolate=self.extrapolation,
-                                                           arithmetic=self.arithmetic )
-                new_series.copy_data(self.dtype_series)
-                self.dtype_series.clear()
-                self.dtype_series = new_series
-
-        if self.dtype == 'float96':
-
-            if self.dtype_series is None:
-                self.dtype_series = TreeSeries_float96_t.__new__( TreeSeries_float96_t,
-                                                                  name=self.name,
-                                                                  interpolate=self.interpolation,
-                                                                  extrapolate=self.extrapolation,
-                                                                  arithmetic=self.arithmetic )
-
-            else:
-                new_series = TreeSeries_float96_t.__new__( TreeSeries_float96_t,
-                                                           name=self.name,
-                                                           interpolate=self.interpolation,
-                                                           extrapolate=self.extrapolation,
-                                                           arithmetic=self.arithmetic )
-                new_series.copy_data(self.dtype_series)
-                self.dtype_series.clear()
-                self.dtype_series = new_series
-
-        if self.dtype == 'float128':
-
-            if self.dtype_series is None:
-                self.dtype_series = TreeSeries_float128_t.__new__( TreeSeries_float128_t,
+                self.dtype_series = __TreeSeries_uint16_t.__new__( __TreeSeries_uint16_t,
                                                                    name=self.name,
                                                                    interpolate=self.interpolation,
                                                                    extrapolate=self.extrapolation,
                                                                    arithmetic=self.arithmetic )
 
             else:
-                new_series = TreeSeries_float128_t.__new__( TreeSeries_float128_t,
+                new_series = __TreeSeries_uint16_t.__new__( __TreeSeries_uint16_t, 
                                                             name=self.name,
                                                             interpolate=self.interpolation,
                                                             extrapolate=self.extrapolation,
@@ -721,44 +434,333 @@ cdef class Series:
                 self.dtype_series.clear()
                 self.dtype_series = new_series
 
-        if self.dtype == 'object':
+        elif self.dtype == 'uint32':
 
             if self.dtype_series is None:
-                self.dtype_series = TreeSeries_object.__new__( TreeSeries_object,
-                                                               name=self.name,
-                                                               interpolate=self.interpolation,
-                                                               extrapolate=self.extrapolation,
-                                                               arithmetic=self.arithmetic )
+                self.dtype_series = __TreeSeries_uint32_t.__new__( __TreeSeries_uint32_t, 
+                                                                   name=self.name,
+                                                                   interpolate=self.interpolation,
+                                                                   extrapolate=self.extrapolation,
+                                                                   arithmetic=self.arithmetic )
+
             else:
-                new_series = TreeSeries_object.__new__( TreeSeries_object,
-                                                        name=self.name,
-                                                        interpolate=self.interpolation,
-                                                        extrapolate=self.extrapolation,
-                                                        arithmetic=self.arithmetic )
+                new_series = __TreeSeries_uint32_t.__new__( __TreeSeries_uint32_t,
+                                                            name=self.name,
+                                                            interpolate=self.interpolation,
+                                                            extrapolate=self.extrapolation,
+                                                            arithmetic=self.arithmetic )
+                new_series.copy_data(self.dtype_series)
+                self.dtype_series.clear()
+                self.dtype_series = new_series
+
+        elif self.dtype == 'uint64':
+
+            if self.dtype_series is None:
+                self.dtype_series = __TreeSeries_uint64_t.__new__( __TreeSeries_uint64_t,
+                                                                   name=self.name,
+                                                                   interpolate=self.interpolation,
+                                                                   extrapolate=self.extrapolation,
+                                                                   arithmetic=self.arithmetic )
+
+            else:
+                new_series = __TreeSeries_uint64_t.__new__( __TreeSeries_uint64_t,
+                                                            name=self.name,
+                                                            interpolate=self.interpolation,
+                                                            extrapolate=self.extrapolation,
+                                                            arithmetic=self.arithmetic )
+                new_series.copy_data(self.dtype_series)
+                self.dtype_series.clear()
+                self.dtype_series = new_series
+
+        elif self.dtype == 'uint96':
+
+            if self.dtype_series is None:
+                self.dtype_series = __TreeSeries_uint96_t.__new__( __TreeSeries_uint96_t,
+                                                                   name=self.name,
+                                                                   interpolate=self.interpolation,
+                                                                   extrapolate=self.extrapolation,
+                                                                   arithmetic=self.arithmetic )
+
+            else:
+                new_series = __TreeSeries_uint96_t.__new__( __TreeSeries_uint96_t,
+                                                            name=self.name,
+                                                            interpolate=self.interpolation,
+                                                            extrapolate=self.extrapolation,
+                                                            arithmetic=self.arithmetic )
+                new_series.copy_data(self.dtype_series)
+                self.dtype_series.clear()
+                self.dtype_series = new_series
+
+        elif self.dtype == 'uint128':
+
+            if self.dtype_series is None:
+                self.dtype_series = __TreeSeries_uint128_t.__new__( __TreeSeries_uint128_t,
+                                                                    name=self.name,
+                                                                    interpolate=self.interpolation,
+                                                                    extrapolate=self.extrapolation,
+                                                                    arithmetic=self.arithmetic )
+
+            else:
+                new_series = __TreeSeries_uint128_t.__new__( __TreeSeries_uint128_t,
+                                                             name=self.name,
+                                                             interpolate=self.interpolation,
+                                                             extrapolate=self.extrapolation,
+                                                             arithmetic=self.arithmetic )
+                new_series.copy_data(self.dtype_series)
+                self.dtype_series.clear()
+                self.dtype_series = new_series
+
+        elif self.dtype == 'int8':
+
+            if self.dtype_series is None:
+                self.dtype_series = __TreeSeries_int8_t.__new__( __TreeSeries_int8_t,
+                                                                 name=self.name,
+                                                                 interpolate=self.interpolation,
+                                                                 extrapolate=self.extrapolation,
+                                                                 arithmetic=self.arithmetic )
+
+            else:
+                new_series = __TreeSeries_int8_t.__new__( __TreeSeries_int8_t, 
+                                                          name=self.name,
+                                                          interpolate=self.interpolation,
+                                                          extrapolate=self.extrapolation,
+                                                          arithmetic=self.arithmetic )
+                new_series.copy_data(self.dtype_series)
+                self.dtype_series.clear()
+                self.dtype_series = new_series
+
+
+        elif self.dtype == 'int16':
+
+            if self.dtype_series is None:
+                self.dtype_series = __TreeSeries_uint16_t.__new__( __TreeSeries_int16_t,
+                                                                   name=self.name,
+                                                                   interpolate=self.interpolation,
+                                                                   extrapolate=self.extrapolation,
+                                                                   arithmetic=self.arithmetic )
+
+            else:
+                new_series = __TreeSeries_int16_t.__new__( __TreeSeries_int16_t,
+                                                           name=self.name,
+                                                           interpolate=self.interpolation,
+                                                           extrapolate=self.extrapolation,
+                                                           arithmetic=self.arithmetic )
+                new_series.copy_data(self.dtype_series)
+                self.dtype_series.clear()
+                self.dtype_series = new_series
+
+        elif self.dtype == 'int32':
+
+            if self.dtype_series is None:
+                self.dtype_series = __TreeSeries_int32_t.__new__( __TreeSeries_int32_t,
+                                                                  name=self.name,
+                                                                  interpolate=self.interpolation,
+                                                                  extrapolate=self.extrapolation,
+                                                                  arithmetic=self.arithmetic )
+
+            else:
+                new_series = __TreeSeries_int32_t.__new__( __TreeSeries_int32_t,
+                                                           name=self.name,
+                                                           interpolate=self.interpolation,
+                                                           extrapolate=self.extrapolation,
+                                                           arithmetic=self.arithmetic )
+                new_series.copy_data(self.dtype_series)
+                self.dtype_series.clear()
+                self.dtype_series = new_series
+
+        elif self.dtype == 'int64':
+
+            if self.dtype_series is None:
+                self.dtype_series = __TreeSeries_int64_t.__new__( __TreeSeries_int64_t,
+                                                                  name=self.name,
+                                                                  interpolate=self.interpolation,
+                                                                  extrapolate=self.extrapolation,
+                                                                  arithmetic=self.arithmetic )
+
+            else:
+                new_series = __TreeSeries_int64_t.__new__( __TreeSeries_int64_t,
+                                                           name=self.name,
+                                                           interpolate=self.interpolation,
+                                                           extrapolate=self.extrapolation,
+                                                           arithmetic=self.arithmetic )
+                new_series.copy_data(self.dtype_series)
+                self.dtype_series.clear()
+                self.dtype_series = new_series
+
+        elif self.dtype == 'int96':
+
+            if self.dtype_series is None:
+                self.dtype_series = __TreeSeries_int96_t.__new__( __TreeSeries_int96_t,
+                                                                  name=self.name,
+                                                                  interpolate=self.interpolation,
+                                                                  extrapolate=self.extrapolation,
+                                                                  arithmetic=self.arithmetic )
+
+            else:
+                new_series = __TreeSeries_int96_t.__new__( __TreeSeries_int96_t,
+                                                           name=self.name,
+                                                           interpolate=self.interpolation,
+                                                           extrapolate=self.extrapolation,
+                                                           arithmetic=self.arithmetic )
+                new_series.copy_data(self.dtype_series)
+                self.dtype_series.clear()
+                self.dtype_series = new_series
+
+        elif self.dtype == 'int128':
+
+            if self.dtype_series is None:
+                self.dtype_series = __TreeSeries_int128_t.__new__( __TreeSeries_int128_t,
+                                                                   name=self.name,
+                                                                   interpolate=self.interpolation,
+                                                                   extrapolate=self.extrapolation,
+                                                                   arithmetic=self.arithmetic )
+
+            else:
+                new_series = __TreeSeries_int128_t.__new__( __TreeSeries_int128_t,
+                                                            name=self.name,
+                                                            interpolate=self.interpolation,
+                                                            extrapolate=self.extrapolation,
+                                                            arithmetic=self.arithmetic )
+                new_series.copy_data(self.dtype_series)
+                self.dtype_series.clear()
+                self.dtype_series = new_series
+
+        elif self.dtype == 'float32':
+
+            if self.dtype_series is None:
+                self.dtype_series = __TreeSeries_float32_t.__new__( __TreeSeries_float32_t,
+                                                                    name=self.name,
+                                                                    interpolate=self.interpolation,
+                                                                    extrapolate=self.extrapolation,
+                                                                    arithmetic=self.arithmetic )
+
+            else:
+                new_series = __TreeSeries_float32_t.__new__( __TreeSeries_float32_t,
+                                                             name=self.name,
+                                                             interpolate=self.interpolation,
+                                                             extrapolate=self.extrapolation,
+                                                             arithmetic=self.arithmetic )
+                new_series.copy_data(self.dtype_series)
+                self.dtype_series.clear()
+                self.dtype_series = new_series
+
+        elif self.dtype == 'float64':
+
+            if self.dtype_series is None:
+                self.dtype_series = __TreeSeries_float64_t.__new__( __TreeSeries_float64_t,
+                                                                    name=self.name,
+                                                                    interpolate=self.interpolation,
+                                                                    extrapolate=self.extrapolation,
+                                                                    arithmetic=self.arithmetic )
+
+            else:
+                new_series = __TreeSeries_float64_t.__new__( __TreeSeries_float64_t,
+                                                             name=self.name,
+                                                             interpolate=self.interpolation,
+                                                             extrapolate=self.extrapolation,
+                                                             arithmetic=self.arithmetic )
+                new_series.copy_data(self.dtype_series)
+                self.dtype_series.clear()
+                self.dtype_series = new_series
+
+        elif self.dtype == 'float80':
+
+            if self.dtype_series is None:
+                self.dtype_series = __TreeSeries_float80_t.__new__( __TreeSeries_float80_t,
+                                                                    name=self.name,
+                                                                    interpolate=self.interpolation,
+                                                                    extrapolate=self.extrapolation,
+                                                                    arithmetic=self.arithmetic )
+
+            else:
+                new_series = __TreeSeries_float80_t.__new__( __TreeSeries_float80_t,
+                                                             name=self.name,
+                                                             interpolate=self.interpolation,
+                                                             extrapolate=self.extrapolation,
+                                                             arithmetic=self.arithmetic )
+                new_series.copy_data(self.dtype_series)
+                self.dtype_series.clear()
+                self.dtype_series = new_series
+
+        elif self.dtype == 'float96':
+
+            if self.dtype_series is None:
+                self.dtype_series = __TreeSeries_float96_t.__new__( __TreeSeries_float96_t,
+                                                                    name=self.name,
+                                                                    interpolate=self.interpolation,
+                                                                    extrapolate=self.extrapolation,
+                                                                    arithmetic=self.arithmetic )
+
+            else:
+                new_series = __TreeSeries_float96_t.__new__( __TreeSeries_float96_t,
+                                                             name=self.name,
+                                                             interpolate=self.interpolation,
+                                                             extrapolate=self.extrapolation,
+                                                             arithmetic=self.arithmetic )
+                new_series.copy_data(self.dtype_series)
+                self.dtype_series.clear()
+                self.dtype_series = new_series
+
+        elif self.dtype == 'float128':
+
+            if self.dtype_series is None:
+                self.dtype_series = __TreeSeries_float128_t.__new__( __TreeSeries_float128_t,
+                                                                     name=self.name,
+                                                                     interpolate=self.interpolation,
+                                                                     extrapolate=self.extrapolation,
+                                                                     arithmetic=self.arithmetic )
+
+            else:
+                new_series = __TreeSeries_float128_t.__new__( __TreeSeries_float128_t,
+                                                              name=self.name,
+                                                              interpolate=self.interpolation,
+                                                              extrapolate=self.extrapolation,
+                                                              arithmetic=self.arithmetic )
+                new_series.copy_data(self.dtype_series)
+                self.dtype_series.clear()
+                self.dtype_series = new_series
+
+        elif self.dtype == 'object':
+
+            if self.dtype_series is None:
+                self.dtype_series = __TreeSeries_object.__new__( __TreeSeries_object,
+                                                                 name=self.name,
+                                                                 interpolate=self.interpolation,
+                                                                 extrapolate=self.extrapolation,
+                                                                 arithmetic=self.arithmetic )
+            else:
+                new_series = __TreeSeries_object.__new__( __TreeSeries_object,
+                                                          name=self.name,
+                                                          interpolate=self.interpolation,
+                                                          extrapolate=self.extrapolation,
+                                                          arithmetic=self.arithmetic )
 
                 new_series.copy_data(self.dtype_series, to_type="object")
                 self.dtype_series.clear()
                 self.dtype_series = new_series
 
-        if self.dtype == 'str':
+        elif self.dtype == 'str':
 
             if self.dtype_series is None:
-                self.dtype_series = TreeSeries_object.__new__( TreeSeries_object,
-                                                               name=self.name,
-                                                               interpolate=self.interpolation,
-                                                               extrapolate=self.extrapolation,
-                                                               arithmetic=self.arithmetic )
+                self.dtype_series = __TreeSeries_object.__new__( __TreeSeries_object,
+                                                                 name=self.name,
+                                                                 interpolate=self.interpolation,
+                                                                 extrapolate=self.extrapolation,
+                                                                 arithmetic=self.arithmetic )
 
             else:
-                new_series = TreeSeries_object.__new__( TreeSeries_object, 
-                                                        name=self.name,
-                                                        interpolate=self.interpolation,
-                                                        extrapolate=self.extrapolation,
-                                                        arithmetic=self.arithmetic )
+                new_series = __TreeSeries_object.__new__( __TreeSeries_object, 
+                                                          name=self.name,
+                                                          interpolate=self.interpolation,
+                                                          extrapolate=self.extrapolation,
+                                                          arithmetic=self.arithmetic )
 
                 new_series.copy_data(self.dtype_series, to_type="str")
                 self.dtype_series.clear()
                 self.dtype_series = new_series
+
+        else:
+            raise TypeError( "Unsupported data type {:}".format(dtype) )
 
     #--------------------------------------------------------------------------------------------
     # Pandas convertations
@@ -771,7 +773,6 @@ cdef class Series:
         return pd.Series( data=self.values(), index=self.index() )
 
 
-    @cython.embedsignature(True)
     @staticmethod
     def from_pandas( pd_series, str interpolate='floor', extrapolate=0, 
                      str arithmetic='left' ):

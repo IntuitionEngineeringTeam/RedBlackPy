@@ -92,7 +92,6 @@ set_iterator(Iterable& trees, std::string type) {
         }
 
         __current = &(*__queue.begin())->key;
-
     }
 
     if (type == "reverse") {
@@ -154,16 +153,22 @@ trees_iterator<tree_type, node_type>::operator++(int) {
     if ( __queue.size() != 0 ) {
 
         if ( __current->second != (*__current->first).back() ) {
-            auto pair = __pair( __current->first, std::next(__current->second) );
-            auto it = __queue.insert_search(pair);
 
-            if ( !__equal(it->key, pair) )
-                __queue.insert( it, __node_t(pair) );
+            __pair pair;
+            __node_iter iter = __current->second;
+            __node_t* it;
 
-            else if ( pair.second != pair.first->back() ) {
-                    pair = __pair( __current->first, std::next(pair.second) );
-                    __queue.insert(pair);
+            do {
+                iter = std::next(iter);
+                pair = __pair( __current->first, iter);
+                it = __queue.insert_search(pair);
+
+                if ( !__equal(it->key, pair) ) {
+                    __queue.insert( it, __node_t(pair) );
+                    break;
                 }
+
+            } while ( pair.second != pair.first->back() );
         }
 
         __queue.erase( *__queue.begin() );
@@ -183,16 +188,22 @@ trees_iterator<tree_type, node_type>::operator--(int) {
     if ( __queue.size() != 0 ) {
 
         if ( __current->second != (*__current->first).begin() ) {
-            auto pair = __pair( __current->first, std::prev(__current->second) );
-            auto it = __queue.insert_search(pair);
 
-            if ( !__equal(it->key, pair) )
-                __queue.insert( it, __node_t(pair) );
+            __pair pair;
+            __node_iter iter = __current->second;
+            __node_t* it;
 
-            else if ( pair.second != pair.first->begin() ) {
-                    pair = __pair( __current->first, std::prev(pair.second) );
-                    __queue.insert(pair);
+            do {
+                iter = std::prev(iter);
+                pair = __pair( __current->first, iter);
+                it = __queue.insert_search(pair);
+
+                if ( !__equal(it->key, pair) ) {
+                    __queue.insert( it, __node_t(pair) );
+                    break;
                 }
+                
+            } while ( pair.second != pair.first->begin() );
         }
 
         __queue.erase( *__queue.back() );

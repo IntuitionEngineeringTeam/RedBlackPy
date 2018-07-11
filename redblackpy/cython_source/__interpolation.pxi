@@ -8,7 +8,7 @@
 #--------------------------------------------------------------------------------------------
 ctypedef {DTYPE} ( *interpolate_{DTYPE})(node_ptr, node_ptr, object, node_ptr, 
                    {DTYPE}, int32_t* )
-ctypedef {DTYPE} (*itermode_search_{DTYPE})(TreeSeries_{DTYPE}, object, int32_t*)
+ctypedef {DTYPE} (*itermode_search_{DTYPE})(__TreeSeries_{DTYPE}, object, int32_t*)
 
 
 

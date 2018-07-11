@@ -32,17 +32,6 @@ cdef inline int equal(const c_pyobject& a_1, const c_pyobject& a_2) with gil:
 
     return PyObject_RichCompareBool(a_1.data, a_2.data, Py_EQ)
 
-
-
-# Typedefs
-#--------------------------------------------------------------------------------------------
-ctypedef void*                                              void_ptr
-ctypedef tree.rb_node_valued[c_pyobject, void_ptr]          rb_node_valued
-ctypedef tree.rb_tree[rb_node_valued, c_pyobject]           rb_tree
-ctypedef tree.rb_tree[rb_node_valued, c_pyobject]*          rb_tree_ptr
-ctypedef rb_node_valued*                                    node_ptr
-ctypedef tree.rb_tree[rb_node_valued, c_pyobject].iterator  iterator
-#--------------------------------------------------------------------------------------------
 cdef inline int comp_pair( const pair[rb_tree_ptr, iterator]& a_1,
                            const pair[rb_tree_ptr, iterator]& a_2 ) with gil:
 

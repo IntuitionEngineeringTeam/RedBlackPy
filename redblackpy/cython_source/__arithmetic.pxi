@@ -7,8 +7,9 @@
 # Arithmetic helpers
 #--------------------------------------------------------------------------------------------
 ctypedef {DTYPE} (*arithmetic_{DTYPE})({DTYPE}, {DTYPE})
-ctypedef TreeSeries_{DTYPE} (*arithmetic_type_{DTYPE})( TreeSeries_{DTYPE}, BaseTreeSeries, 
-                                                        arithmetic_{DTYPE} )
+ctypedef __TreeSeries_{DTYPE} (*arithmetic_type_{DTYPE})( __TreeSeries_{DTYPE}, 
+													      __BaseTreeSeries, 
+                                                          arithmetic_{DTYPE} )
 
 
 cdef inline {DTYPE} __add_{DTYPE}({DTYPE} a, {DTYPE} b):
