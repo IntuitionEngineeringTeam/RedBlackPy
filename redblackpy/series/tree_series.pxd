@@ -60,7 +60,7 @@ cdef int equal_pair( const pair[rb_tree_ptr, iterator]& a_1,
 #--------------------------------------------------------------------------------------------
 cdef class __BaseTreeSeries:
 
-	# Attributes
+    # Attributes
     cdef rb_tree_ptr __index
     cdef node_ptr    __last_call
     cdef bool        __iter_mode
@@ -80,7 +80,7 @@ cdef class __BaseTreeSeries:
 
 cdef class Series:
 
-	# Attributes
+    # Attributes
     cdef __BaseTreeSeries dtype_series
     cdef public   str name
     cdef readonly str dtype
