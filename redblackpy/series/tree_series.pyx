@@ -46,12 +46,19 @@ include "../cython_source/tree_series_dtype.pxi"
 @cython.embedsignature(True)
 cdef class Series:
     """
-    One of the primary mapping data structure. Provides fast queries: insertion,
-    deletion, interpolation with no additional memory use, get item by key, 
-    set item by key.
+    Mapping data structure based on red-black trees. Provides fast queries: 
+    insertion, deletion, interpolation with no additional memory use, get item by key, 
+    set item by key. It able to keep any Python object or specific numeric type as 
+    values. Key type have to provide compare operators. This structure is addition to
+    pandas.Series. When we work with static data then pandas is realy efficient.
+    But when we work with dynamic data (much of insertion and deletion operations)
+    pandas is realy slow. To proccess ordered, dynamic data in efficient way 
+    redblackpy.Series is a good choise. It supports main numeric types, has builtin to 
+    getitem operator (Series[key]) interpolation methods (floor, ceil, near neighboor, 
+    linear, keys only), so we have access at any key even though this key not in index
+    by interpolation (except case of keys only interpolation). It is very usefull in work 
+    with time series.
     """
-
-
     def __init__( self, object index=None, object values=None, str dtype="float32", 
                   str name="Untitled", str interpolate="floor", extrapolate=0, 
                   str arithmetic="left" ):
