@@ -95,59 +95,70 @@ cdef class Series:
                                                                extrapolate, arithmetic  )
 
         elif self.dtype == 'uint96':
-            self.dtype_series = __TreeSeries_uint96_t.__new__( __TreeSeries_uint96_t, index, 
-                                                               values, name, interpolate, 
-                                                               extrapolate, arithmetic  )
+            self.dtype_series = __TreeSeries_uint96_t.__new__( __TreeSeries_uint96_t, 
+                                                               index, values, name, 
+                                                               interpolate, extrapolate, 
+                                                               arithmetic  )
 
         elif self.dtype == 'uint128':
-            self.dtype_series = __TreeSeries_uint128_t.__new__( __TreeSeries_uint128_t, index, 
-                                                                values, name, interpolate, 
-                                                                extrapolate, arithmetic  )
+            self.dtype_series = __TreeSeries_uint128_t.__new__( __TreeSeries_uint128_t, 
+                                                                index, values, name, 
+                                                                interpolate, extrapolate, 
+                                                                arithmetic  )
 
         elif self.dtype == 'int8':
-            self.dtype_series = __TreeSeries_int8_t.__new__( __TreeSeries_int8_t, index, 
-                                                             values, name, interpolate, 
-                                                             extrapolate, arithmetic  )
+            self.dtype_series = __TreeSeries_int8_t.__new__( __TreeSeries_int8_t, 
+                                                             index, values, name, 
+                                                             interpolate, extrapolate, 
+                                                             arithmetic  )
 
         elif self.dtype == 'int16':
-            self.dtype_series = __TreeSeries_int16_t.__new__( __TreeSeries_int16_t, index, 
-                                                              values, name, interpolate, 
-                                                              extrapolate, arithmetic  )
+            self.dtype_series = __TreeSeries_int16_t.__new__( __TreeSeries_int16_t, 
+                                                              index, values, name, 
+                                                              interpolate, extrapolate, 
+                                                              arithmetic  )
 
         elif self.dtype == 'int32':
-            self.dtype_series = __TreeSeries_int32_t.__new__( __TreeSeries_int32_t, index, 
-                                                              values, name, interpolate, 
-                                                              extrapolate, arithmetic  )
+            self.dtype_series = __TreeSeries_int32_t.__new__( __TreeSeries_int32_t, 
+                                                              index, values, name, 
+                                                              interpolate, extrapolate, 
+                                                              arithmetic  )
 
         elif self.dtype == 'int64':
-            self.dtype_series = __TreeSeries_int64_t.__new__( __TreeSeries_int64_t, index, 
-                                                              values, name, interpolate, 
-                                                              extrapolate, arithmetic  )
+            self.dtype_series = __TreeSeries_int64_t.__new__( __TreeSeries_int64_t, 
+                                                              index, values, name, 
+                                                              interpolate, extrapolate, 
+                                                              arithmetic  )
 
         elif self.dtype == 'int96':
-            self.dtype_series = __TreeSeries_int96_t.__new__( __TreeSeries_int96_t, index, 
-                                                              values, name, interpolate, 
-                                                              extrapolate, arithmetic  )
+            self.dtype_series = __TreeSeries_int96_t.__new__( __TreeSeries_int96_t, 
+                                                              index, values, name, 
+                                                              interpolate, extrapolate, 
+                                                              arithmetic  )
 
         elif self.dtype == 'int128':
-            self.dtype_series = __TreeSeries_int128_t.__new__( __TreeSeries_int128_t, index, 
-                                                               values, name, interpolate, 
-                                                               extrapolate, arithmetic  )
+            self.dtype_series = __TreeSeries_int128_t.__new__( __TreeSeries_int128_t, 
+                                                               index, values, name, 
+                                                               interpolate, extrapolate, 
+                                                               arithmetic  )
 
         elif self.dtype == 'float32':
-            self.dtype_series = __TreeSeries_float32_t.__new__( __TreeSeries_float32_t, index, 
-                                                                values, name, interpolate, 
-                                                                extrapolate, arithmetic  )
+            self.dtype_series = __TreeSeries_float32_t.__new__( __TreeSeries_float32_t, 
+                                                                index, values, name, 
+                                                                interpolate, extrapolate, 
+                                                                arithmetic  )
 
         elif self.dtype == 'float64':
-            self.dtype_series = __TreeSeries_float64_t.__new__( __TreeSeries_float64_t, index, 
-                                                                values, name, interpolate, 
-                                                                extrapolate, arithmetic  )
+            self.dtype_series = __TreeSeries_float64_t.__new__( __TreeSeries_float64_t, 
+                                                                index, values, name, 
+                                                                interpolate, extrapolate, 
+                                                                arithmetic  )
 
         elif self.dtype == 'float80':
-            self.dtype_series = __TreeSeries_float80_t.__new__( __TreeSeries_float80_t, index, 
-                                                                values, name, interpolate, 
-                                                                extrapolate, arithmetic  )
+            self.dtype_series = __TreeSeries_float80_t.__new__( __TreeSeries_float80_t, 
+                                                                index, values, name, 
+                                                                interpolate, extrapolate, 
+                                                                arithmetic  )
 
         elif self.dtype == 'float96':
             self.dtype_series = __TreeSeries_float96_t.__new__( __TreeSeries_float96_t, 
