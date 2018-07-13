@@ -13,7 +13,7 @@ from libcpp.utility cimport pair
 from cython.operator cimport dereference as deref
 from libcpp.vector cimport vector
 from libcpp.string cimport string
-from cython.operator cimport postincrement as pinc
+from cython.operator cimport postincrement as pinc, postdecrement as pdec
 from redblackpy.series.tree_series import  Series
 from redblackpy.series.tree_series cimport Series
 from tree_series cimport rb_tree_ptr, equal_pair, comp_pair, \
@@ -62,11 +62,24 @@ cdef class SeriesIterator:
 
         self.__set_iterator(iterator_type)
 
-        while not self.__iterator.empty():
-            key = <object>deref(self.__iterator).key.data
-            pinc(self.__iterator)
+        if iterator_type == "forward":
 
-            yield key
+            while not self.__iterator.empty():
+                key = <object>deref(self.__iterator).key.data
+                pinc(self.__iterator)
+
+                yield key
+
+        elif iterator_type == "reverse":
+
+            while not self.__iterator.empty():
+                key = <object>deref(self.__iterator).key.data
+                pdec(self.__iterator)
+
+                yield key
+
+        else:
+            raise TypeError("Uknown iterator type")            
 
 
     cdef void __set_iterator(self, str iterator_type) except*:
