@@ -227,6 +227,12 @@ __advance( __advance_t advance, __tail_tree access_1, __tail_queue access_2) {
         __queue.erase( *( (&__queue)->*access_2 )() );
 
         if (__queue.size() != 0)
+            /*
+            ( (&__queue)->*access_2 )() - call member function begin() or back() by pointer.
+            begin() or back() returns iterators of nodes pointers, so we get the object using *.
+            ( *( (&__queue)->*access_2 )() )->key - this has type trees_iterator::__pair, current
+            has type __pair*, so we get the addres using &. 
+            **/
             __current = &( *( (&__queue)->*access_2 )() )->key;
     }
 }
@@ -254,7 +260,12 @@ __set_iterator(Iterable& trees, __tail_tree access_1, __tail_queue access_2) {
         if ( !__equal(it->key, pair) )
             __queue.insert( it, __node_t(pair) );
     }
-
+    /*
+    ( (&__queue)->*access_2 )() - call member function begin() or back() by pointer.
+    begin() or back() returns iterators of nodes pointers, so we get the object using *.
+    ( *( (&__queue)->*access_2 )() )->key - this has type trees_iterator::__pair, current
+    has type __pair*, so we get the addres using &. 
+    **/
     __current =  &( *( (&__queue)->*access_2 )() )->key;
 }
 
