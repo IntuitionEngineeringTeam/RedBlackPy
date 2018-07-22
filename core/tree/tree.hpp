@@ -34,7 +34,6 @@ template <class key_type>
 class rb_node {
 
     public:
-
         //Typedefs
         typedef rb_node*                                 self_ptr;
         typedef rb_node&                                 self_ref;
@@ -77,7 +76,6 @@ template <class key_type, class val_type>
 class rb_node_valued {
 
     public:
-
         //Typedefs
         typedef rb_node_valued*                         self_ptr;
         typedef rb_node_valued&                         self_ref;
@@ -121,7 +119,6 @@ template < class node_type,
 class rb_tree {
 
     public:
-
         // Typedefs
         typedef typename std::allocator_traits<alloc_type>     alloc_traits;
         typedef node_type*                                     node_ptr;
@@ -181,7 +178,6 @@ class rb_tree {
         ref operator=(const_ref other);
 
     private:
-
         // Atributes
         node_ptr              __root;
         node_ptr              __begin;

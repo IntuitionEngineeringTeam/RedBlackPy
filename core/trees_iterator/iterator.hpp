@@ -13,7 +13,6 @@
 #include "../tree/tree.hpp"
 
 
-
 namespace qseries {
 
 //-------------------------------------------------------------------------------------------
@@ -24,7 +23,6 @@ class trees_iterator : public std::iterator< std::bidirectional_iterator_tag,
                                              node_type > {
 
     public:
-
         // Typedefs
         typedef typename tree_type::iterator                       __node_iter;
         typedef typename std::pair<tree_type*, __node_iter>        __pair;
@@ -60,7 +58,6 @@ class trees_iterator : public std::iterator< std::bidirectional_iterator_tag,
 
 
     private:
-
         // Attributes
         __pair*                   __current;
         rb_tree<__node_t, __pair> __queue;
@@ -83,10 +80,6 @@ class trees_iterator : public std::iterator< std::bidirectional_iterator_tag,
 
 
 } // namespace qseries
-
-
-
-
 
 
 

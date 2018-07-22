@@ -250,7 +250,6 @@ __set_iterator(Iterable& trees, __tail_tree access_1, __tail_queue access_2) {
     __queue = rb_tree<__node_t, __pair>();
     __queue.set_equal(__equal_py);
     __queue.set_compare(__comp_py);
-
     __queue.insert( __pair( trees[0], (trees[0]->*access_1)() ) );
 
     for(size_t i = 1; i < trees.size(); i++) {
