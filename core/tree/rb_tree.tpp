@@ -202,7 +202,7 @@ template < class node_type,
 inline node_ptr<node_type, key_type, alloc_type>
 rb_tree<node_type, key_type, alloc_type>::insert(const_node_ref node) {
 
-    return insert( node_type(node) );
+    return insert( std::move( node_type(node) ) );
 }
 
 
@@ -212,8 +212,8 @@ template < class node_type,
 node_ptr<node_type, key_type, alloc_type>
 rb_tree<node_type, key_type, alloc_type>::insert(node_type&& node) {
 
-    node_ptr new_node = __allocator.allocate(size_type(1));
-    __allocator.construct(new_node, node_type(node));
+    node_ptr new_node = __allocator.allocate(1);
+    __allocator.construct( new_node, node_type(node) );
     int update = __insert_update(new_node);
     node_ptr position;
 

@@ -12,12 +12,14 @@
 
 // Constructors
 //---------------------------------------------------------------------------------------------------------
-template <class tree_type, class node_type>
+template < class tree_type, 
+           class node_type >
 trees_iterator<tree_type, node_type>::trees_iterator()
     : __current(nullptr) { }
 
 
-template <class tree_type, class node_type>
+template < class tree_type, 
+           class node_type >
 trees_iterator<tree_type, node_type>::trees_iterator(const trees_iterator& other) {
 
     __current = other.__current;
@@ -27,7 +29,8 @@ trees_iterator<tree_type, node_type>::trees_iterator(const trees_iterator& other
 }
 
 
-template <class tree_type, class node_type>
+template < class tree_type, 
+           class node_type >
 template <class Iterable>
 trees_iterator<tree_type, node_type>::
 trees_iterator(Iterable& trees, std::string type) {
@@ -36,7 +39,8 @@ trees_iterator(Iterable& trees, std::string type) {
 }
 
 
-template <class tree_type, class node_type>
+template < class tree_type, 
+           class node_type >
 template <class Iterable>
 trees_iterator<tree_type, node_type>::
 trees_iterator( Iterable& trees, std::string type, 
@@ -52,13 +56,15 @@ trees_iterator( Iterable& trees, std::string type,
 }
 
 
-template <class tree_type, class node_type>
+template < class tree_type, 
+           class node_type >
 trees_iterator<tree_type, node_type>::~trees_iterator() { }
 
 
 // Public Methods
 //---------------------------------------------------------------------------------------------------------
-template <class tree_type, class node_type>
+template < class tree_type, 
+           class node_type >
 inline bool trees_iterator<tree_type, node_type>::empty() {
 
     if (__queue.size() == 0)
@@ -68,49 +74,27 @@ inline bool trees_iterator<tree_type, node_type>::empty() {
 }
 
 
-template <class tree_type, class node_type>
+template < class tree_type, 
+           class node_type >
 template <class Iterable>
 inline void trees_iterator<tree_type, node_type>::
 set_iterator(Iterable& trees, std::string type) {
 
-    __pair pair;
-    __node_t* it;
+    if (type == "forward")
+        __set_iterator( trees, &tree_type::begin, 
+                        &rb_tree<__node_t, __pair>::begin );
 
-    __queue = rb_tree<__node_t, __pair>();
-    __queue.set_equal(__equal_py);
-    __queue.set_compare(__comp_py);
+    else if (type == "reverse")
+        __set_iterator( trees, &tree_type::back, 
+                        &rb_tree<__node_t, __pair>::back );
 
-    if (type == "forward") {
-        __queue.insert( __pair( trees[0], trees[0]->begin() ) );
-
-        for(size_t i = 1; i < trees.size(); i++) {
-            pair = __pair( trees[i], trees[i]->begin() );
-            it = __queue.insert_search(pair);
-
-            if ( !__equal(it->key, pair) )
-                __queue.insert( it, __node_t(pair) );
-        }
-
-        __current = &(*__queue.begin())->key;
-    }
-
-    if (type == "reverse") {
-        __queue.insert( __pair( trees[0], trees[0]->back() ) );
-
-        for(size_t i = 1; i < trees.size(); i++) {
-            pair = __pair( trees[i], trees[i]->back() );
-            it = __queue.insert_search(pair);
-
-            if ( !__equal(it->key, pair) )
-                __queue.insert( it, __node_t(pair) );
-        }
-
-        __current = &(*__queue.back())->key;
-    }
+    else
+        throw TypeError("Uknown iterator type.");
 }
 
 
-template <class tree_type, class node_type>
+template < class tree_type, 
+           class node_type >
 inline void trees_iterator<tree_type, node_type>::
 set_compare(key_compare_py compare) {
 
@@ -119,7 +103,8 @@ set_compare(key_compare_py compare) {
 }
 
 
-template <class tree_type, class node_type>
+template < class tree_type, 
+           class node_type >
 inline void trees_iterator<tree_type, node_type>::
 set_equal(key_compare_py equal) {
 
@@ -130,15 +115,16 @@ set_equal(key_compare_py equal) {
 
 // Operators
 //---------------------------------------------------------------------------------------------------------
-template <class tree_type, class node_type>
+template < class tree_type, 
+           class node_type >
 inline bool trees_iterator<tree_type, node_type>::
 operator==(const trees_iterator& other) const {
 
     return (*__current == *other.__current);
 }
 
-
-template <class tree_type, class node_type>
+template < class tree_type, 
+           class node_type >
 inline bool trees_iterator<tree_type, node_type>::
 operator!=(const trees_iterator& other) const {
 
@@ -146,77 +132,34 @@ operator!=(const trees_iterator& other) const {
 }
 
 
-template <class tree_type, class node_type>
+template < class tree_type, 
+           class node_type >
 trees_iterator<tree_type, node_type>& 
 trees_iterator<tree_type, node_type>::operator++(int) {
 
-    if ( __queue.size() != 0 ) {
-
-        if ( __current->second != (*__current->first).back() ) {
-
-            __pair pair;
-            __node_iter iter = __current->second;
-            __node_t* it;
-
-            do {
-                iter = std::next(iter);
-                pair = __pair( __current->first, iter);
-                it = __queue.insert_search(pair);
-
-                if ( !__equal(it->key, pair) ) {
-                    __queue.insert( it, __node_t(pair) );
-                    break;
-                }
-
-            } while ( pair.second != pair.first->back() );
-        }
-
-        __queue.erase( *__queue.begin() );
-
-        if (__queue.size() != 0)
-            __current = &(*__queue.begin())->key;
-    }
+    __advance( &__next, 
+               &tree_type::back, 
+               &rb_tree<__node_t, __pair>::begin);
 
     return *this;
 }
 
 
-template <class tree_type, class node_type>
+template < class tree_type, 
+           class node_type >
 trees_iterator<tree_type, node_type>& 
 trees_iterator<tree_type, node_type>::operator--(int) {
 
-    if ( __queue.size() != 0 ) {
-
-        if ( __current->second != (*__current->first).begin() ) {
-
-            __pair pair;
-            __node_iter iter = __current->second;
-            __node_t* it;
-
-            do {
-                iter = std::prev(iter);
-                pair = __pair( __current->first, iter);
-                it = __queue.insert_search(pair);
-
-                if ( !__equal(it->key, pair) ) {
-                    __queue.insert( it, __node_t(pair) );
-                    break;
-                }
-                
-            } while ( pair.second != pair.first->begin() );
-        }
-
-        __queue.erase( *__queue.back() );
-
-        if (__queue.size() != 0)
-            __current = &(*__queue.back())->key;
-    }
+    __advance( &__prev, 
+               &tree_type::begin, 
+               &rb_tree<__node_t, __pair>::back );
 
     return *this;
 }
 
 
-template <class tree_type, class node_type>
+template < class tree_type, 
+           class node_type >
 trees_iterator<tree_type, node_type>& 
 trees_iterator<tree_type, node_type>::operator=(const trees_iterator& other) {
 
@@ -229,14 +172,97 @@ trees_iterator<tree_type, node_type>::operator=(const trees_iterator& other) {
 }
 
 
-template <class tree_type, class node_type>
+template < class tree_type, 
+           class node_type >
 inline node_type& trees_iterator<tree_type, node_type>::operator*() const {
 
     return *(*__current->second);
 }
 
 
-template <class tree_type, class node_type>
+// Private methods
+//-------------------------------------------------------------------------------------------
+template < class tree_type, 
+           class node_type >
+inline typename trees_iterator<tree_type, node_type>::__node_iter
+trees_iterator<tree_type, node_type>::__next(__node_iter it) {
+
+    return std::next(it);
+}
+
+
+template < class tree_type, 
+           class node_type >
+inline typename trees_iterator<tree_type, node_type>::__node_iter
+trees_iterator<tree_type, node_type>::__prev(__node_iter it) {
+
+    return std::prev(it);
+}
+
+
+template < class tree_type, 
+           class node_type >
+void trees_iterator<tree_type, node_type>::
+__advance( __advance_t advance, __tail_tree access_1, __tail_queue access_2) {
+
+    if ( __queue.size() != 0 ) {
+
+        if ( __current->second != (__current->first->*access_1)() ) {
+
+            __pair pair;
+            __node_iter iter = __current->second;
+            __node_t* it;
+
+            do {
+                iter = advance(iter);
+                pair = __pair( __current->first, iter);
+                it = __queue.insert_search(pair);
+
+                if ( !__equal(it->key, pair) ) {
+                    __queue.insert( it, __node_t(pair) );
+                    break;
+                }
+                
+            } while ( pair.second != (pair.first->*access_1)() );
+        }
+
+        __queue.erase( *( (&__queue)->*access_2 )() );
+
+        if (__queue.size() != 0)
+            __current = &( *( (&__queue)->*access_2 )() )->key;
+    }
+}
+
+
+template < class tree_type, 
+           class node_type >
+template <class Iterable>
+void trees_iterator<tree_type, node_type>::
+__set_iterator(Iterable& trees, __tail_tree access_1, __tail_queue access_2) {
+
+    __pair pair;
+    __node_t* it;
+
+    __queue = rb_tree<__node_t, __pair>();
+    __queue.set_equal(__equal_py);
+    __queue.set_compare(__comp_py);
+
+    __queue.insert( __pair( trees[0], (trees[0]->*access_1)() ) );
+
+    for(size_t i = 1; i < trees.size(); i++) {
+        pair = __pair( trees[i], (trees[i]->*access_1)() );
+        it = __queue.insert_search(pair);
+
+        if ( !__equal(it->key, pair) )
+            __queue.insert( it, __node_t(pair) );
+    }
+
+    __current =  &( *( (&__queue)->*access_2 )() )->key;
+}
+
+
+template < class tree_type, 
+           class node_type >
 bool trees_iterator<tree_type, node_type>::
 __comp(const __pair& pair_1, const __pair& pair_2) {
 
@@ -251,7 +277,8 @@ __comp(const __pair& pair_1, const __pair& pair_2) {
 }
 
 
-template <class tree_type, class node_type>
+template < class tree_type, 
+           class node_type >
 bool trees_iterator<tree_type, node_type>::
 __equal(const __pair& pair_1, const __pair& pair_2) {
 

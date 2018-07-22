@@ -29,7 +29,11 @@ class trees_iterator : public std::iterator< std::bidirectional_iterator_tag,
         typedef typename tree_type::iterator                       __node_iter;
         typedef typename std::pair<tree_type*, __node_iter>        __pair;
         typedef rb_node<__pair>                                    __node_t;
-        typedef typename rb_tree<__node_t, __pair>::key_compare_py key_compare_py; 
+        typedef typename rb_tree<__node_t, __pair>::iterator       __iterator;
+        typedef typename rb_tree<__node_t, __pair>::key_compare_py key_compare_py;
+        typedef __iterator (rb_tree<__node_t, __pair>::*__tail_queue)(void);
+        typedef __node_iter (tree_type::*__tail_tree)(void);
+        typedef __node_iter (*__advance_t)(__node_iter); 
 
         // Constructros
         trees_iterator();
@@ -63,6 +67,12 @@ class trees_iterator : public std::iterator< std::bidirectional_iterator_tag,
         key_compare_py            __comp_py;
         key_compare_py            __equal_py;
 
+        // Advance
+        static __node_iter __next(__node_iter);
+        static __node_iter __prev(__node_iter);
+        void __advance(__advance_t, __tail_tree, __tail_queue);
+        template <class Iterable> void __set_iterator( Iterable&, __tail_tree, 
+                                                       __tail_queue );
         // Comparators wrappers for Python exception handling
         bool __comp(const __pair&, const __pair&);
         bool __equal(const __pair&, const __pair&);
