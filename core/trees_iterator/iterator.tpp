@@ -137,9 +137,8 @@ template < class tree_type,
 trees_iterator<tree_type, node_type>& 
 trees_iterator<tree_type, node_type>::operator++(int) {
 
-    __advance( &__next, 
-               &tree_type::back, 
-               &rb_tree<__node_t, __pair>::begin);
+    __advance( &__next, &tree_type::back, 
+               &rb_tree<__node_t, __pair>::begin );
 
     return *this;
 }
@@ -150,8 +149,7 @@ template < class tree_type,
 trees_iterator<tree_type, node_type>& 
 trees_iterator<tree_type, node_type>::operator--(int) {
 
-    __advance( &__prev, 
-               &tree_type::begin, 
+    __advance( &__prev, &tree_type::begin, 
                &rb_tree<__node_t, __pair>::back );
 
     return *this;
