@@ -206,7 +206,6 @@ __advance( __advance_t advance, __tail_tree access_1, __tail_queue access_2) {
     if ( __queue.size() != 0 ) {
 
         if ( __current->second != (__current->first->*access_1)() ) {
-
             __pair pair;
             __node_iter iter = __current->second;
             __node_t* it;
@@ -220,7 +219,7 @@ __advance( __advance_t advance, __tail_tree access_1, __tail_queue access_2) {
                     __queue.insert( it, __node_t(pair) );
                     break;
                 }
-                
+
             } while ( pair.second != (pair.first->*access_1)() );
         }
 
