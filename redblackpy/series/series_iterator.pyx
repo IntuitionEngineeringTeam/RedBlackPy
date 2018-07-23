@@ -49,7 +49,6 @@ cdef class SeriesIterator:
 
         :param iterable_series: container with redblackpy.Series objects.
         """
-
         self.__iterator.set_equal(equal_pair)
         self.__iterator.set_compare(comp_pair)
         self.__series_container = [series for series in iterable_series]
@@ -59,7 +58,6 @@ cdef class SeriesIterator:
         """
         :param iterator_type: str, forward or reverse. Default is forward.
         """
-
         self.__set_iterator(iterator_type)
 
         if iterator_type == "forward":

@@ -294,13 +294,18 @@ cdef class __TreeSeries_{DTYPE}(__BaseTreeSeries):
     def __str__(self):
 
         cdef str out_format = '{key}: {value}\n'
-        cdef str result = 'TreeSeries object ' + self.name + '\n'
+        cdef str result = 'Series object ' + self.name + '\n'
         cdef tuple it
 
         for it in self.iteritems():
             result += out_format.format(key=it[0], value=it[1])
 
         return result
+
+
+    def __repr__(self):
+
+        return self.__str__()
 
     
     def __iter__(self):

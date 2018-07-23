@@ -441,18 +441,19 @@ linear_search_from(node_ptr it, const key_type& key) {
     if ( __comp(key, it->key) )
         return tree_search(key);
 
-    if ( __comp(__end->key, key) )
-        return node_pair(__end, __link);
-
     iterator result = it->it_position;
+    iterator end = std::prev( __nodes.end() );
 
-    while ( __comp( (*result)->key, key ) ) 
-        result++;
+    for( ; result != end; result++) {
 
-    if ( __equal( (*result)->key, key ) )
-        return node_pair( (*result), (*result) );
+        if ( __equal( (*result)->key, key ) )
+            return node_pair( (*result), (*result) );
 
-    return node_pair( *result, *std::next(result) );
+        if ( __comp(key, ( *std::next(result) )->key) )
+            return node_pair( *result, *std::next(result) );
+    }
+
+    return node_pair(__end, __link);
 }
 
 

@@ -342,6 +342,22 @@ cdef class Series:
 
         return result
 
+
+    @cython.embedsignature(True)
+    cpdef Series period(self, start, stop, step):
+        """
+        Returns periodic Series from start until stop
+        with period equals step.
+        """        
+        cdef Series result = Series( dtype=self.dtype, 
+                                     interpolate=self.interpolation,
+                                     extrapolate=self.extrapolation,
+                                     arithmetic=self.arithmetic )
+
+        result.dtype_series = self.dtype_series.periodic(start, stop, step)
+
+        return result
+
     
     @cython.embedsignature(True)
     cpdef map(self, method, bint inplace=False, tuple args=(), dict kwargs={}):
@@ -840,7 +856,7 @@ cdef class Series:
     #-------------------------------------------------------------------------------------------------
     # Emulating numeric types
     #-------------------------------------------------------------------------------------------------
-    def __add__(self, Series other):
+    def __add__(self, other):
 
         cdef Series result = Series( dtype=self.dtype, 
                                      interpolate=self.interpolation,

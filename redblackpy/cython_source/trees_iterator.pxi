@@ -19,7 +19,7 @@ cdef extern from "<core/trees_iterator/iterator.hpp>" namespace "qseries" nogil:
 
         void set_compare(key_compare)
         void set_equal(key_compare)
-        void set_iterator[Iterable](const Iterable&, string)
+        void set_iterator[Iterable](const Iterable&, string) except +TypeError
         bool empty()
         node_type& operator*()
         trees_iterator& operator++()
