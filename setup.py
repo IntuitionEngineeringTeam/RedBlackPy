@@ -3,20 +3,20 @@
 #  Copyright © 2018 Intuition. All rights reserved.
 #
 
-
+import os
+import platform
 from setuptools import setup
 from setuptools.command.build_ext import build_ext
 from distutils.extension import Extension
 from Cython.Build import cythonize
-import os
-from setup_tools.code_generation import generate_from_cython_src, TYPES
-import platform
+from setup_tools.code_generation import generate_from_cython_src
+from setup_tools.types import TYPES
 
 
 if platform.system() == 'Darwin':
 
     compile_opts = [ '-std=c++11', 
-                     '-mmacosx-version-min=10.7',  
+                     '-mmacosx-version-min=10.9',  
                      '-stdlib=libc++', 
                      '-Ofast' ]
 
@@ -88,7 +88,13 @@ ext_modules=[ Extension( "redblackpy.series.tree_series",
                                    'core/tree/rb_node.tpp',
                                    'core/tree/rb_node_valued.tpp',
                                    'core/trees_iterator/iterator.hpp',
-                                   'core/trees_iterator/iterator.tpp' ], ) ]
+                                   'core/trees_iterator/iterator.tpp' ], ),
+              
+              Extension( "redblackpy.benchmark.timer",
+                         sources=["redblackpy/benchmark/timer.pyx"],
+                         extra_compile_args=compile_opts,
+                         language = "c++",
+                         include_dirs=['./'] ) ]
 
 setup( name='redblackpy',
        ext_modules = cythonize(ext_modules),
@@ -102,6 +108,6 @@ setup( name='redblackpy',
        url='Intuition project site',
        download_url='https://github.com/IntuitionEngineeringTeam/RedBlackPy',
        zip_safe=False,
-       packages=['redblackpy', 'redblackpy.series'],
+       packages=['redblackpy', 'redblackpy.series', 'redblackpy.benchmark'],
        package_data={'redblackpy.series': ['*.pxd']},
        license='Apache License 2.0' )

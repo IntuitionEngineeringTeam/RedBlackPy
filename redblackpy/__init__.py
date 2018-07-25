@@ -3,7 +3,8 @@
 #  Copyright © 2018 Intuition. All rights reserved.
 #
 
-__all__= ['Series', 'SeriesIterator']
+from .series.tree_series import *
+from .series.series_iterator import *
+from .benchmark.timer import *
 
-from redblackpy.series.tree_series import Series
-from redblackpy.series.series_iterator import SeriesIterator
+__all__ = ['Series', 'SeriesIterator', 'Timer']

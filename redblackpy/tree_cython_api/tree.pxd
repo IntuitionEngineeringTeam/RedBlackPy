@@ -92,14 +92,14 @@ cdef extern from "<core/tree/tree.hpp>" namespace "qseries" nogil:
         node_ptr insert(const key_type&) except +KeyError
         node_ptr insert(const node_type&) except +KeyError
         node_ptr insert(node_ptr&, const node_type&) except +KeyError
-        node_ptr insert_search(const key_type&) except +RuntimeError
+        node_ptr insert_search(const key_type&) except +KeyError
         void erase(const key_type&) except +KeyError 
         void erase(node_ptr) except +KeyError 
         node_ptr root()
         node_ptr link()
-        node_ptr search(const key_type&) except +RuntimeError 
-        pair[node_ptr, node_ptr] linear_search_from(node_type*, const key_type&) except +RuntimeError 
-        pair[node_ptr, node_ptr] tree_search(const key_type&) except +RuntimeError
+        node_ptr search(const key_type&) except +KeyError
+        pair[node_ptr, node_ptr] linear_search_from(node_type*, const key_type&) except +KeyError 
+        pair[node_ptr, node_ptr] tree_search(const key_type&) except +KeyError
         void set_compare(key_compare)
         void set_equal(key_compare)
 

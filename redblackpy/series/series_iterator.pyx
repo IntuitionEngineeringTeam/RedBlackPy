@@ -6,7 +6,7 @@
 # distutils: language=c++
 # cython: boundscheck=False
 # cython: wraparound=False
-# cython: binding=False
+# cython: binding=True
 
 from libcpp cimport bool
 from libcpp.utility cimport pair
@@ -23,8 +23,6 @@ from tree_series cimport rb_tree_ptr, equal_pair, comp_pair, \
 import cython
 cimport cython
 
-include "../cython_source/trees_iterator.pxi"
-
 
 #--------------------------------------------------------------------------------------------
 # Iterator-generator on multiple Series
@@ -38,10 +36,6 @@ cdef class SeriesIterator:
     uses only O(n) additional memory, where n is the number of Series,
     to keep n pointers on trees, and generates next key inplace.
     """
-
-    cdef trees_iterator[rb_tree, rb_node_valued] __iterator
-    cdef list __series_container
-
 
     def __cinit__(self, iterable_series):
         """

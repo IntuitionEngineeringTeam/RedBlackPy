@@ -100,7 +100,7 @@ cdef class Series:
     cpdef tuple floor(self, key)
     cpdef tuple ceil(self, key)
     cpdef Series truncate(self, start, stop)
-    cpdef Series period(self, start, stop, step)
+    cpdef Series uniform(self, start, stop, step)
     cpdef map(self, method, bint inplace=*, tuple args=*, dict kwargs=*)
     cpdef void set_interpolation(self, str interpolate)
     cpdef void set_extrapolation(self, extrapolate)

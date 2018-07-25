@@ -190,9 +190,10 @@ class rb_tree {
         std::list<node_ptr>   __nodes;
 
         // Insert helpers
+        int  __insert_update(node_ptr&);
         void __insert(node_ptr&, node_ptr&);
         void __insert_process(node_ptr&);
-        int  __insert_update(node_ptr&);
+        void __insert_cases(const int&, node_ptr&);
         void __insert_process_red(node_ptr&, node_ptr&);
         void __insert_process_side( node_ptr&, node_ptr node_type::*side_1, 
                                     node_ptr node_type::*side_2 );

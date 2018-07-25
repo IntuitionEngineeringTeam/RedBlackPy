@@ -217,32 +217,17 @@ rb_tree<node_type, key_type, alloc_type>::insert(node_type&& node) {
     int update = __insert_update(new_node);
     node_ptr position;
 
-    switch(update) {
+    if (!update) {
+        position = insert_search(new_node->key);
 
-        case 0: position = insert_search(new_node->key);
-
-                if ( __equal(new_node->key, position->key) )
+        if ( __equal(new_node->key, position->key) )
                     throw KeyError("Key already exists.");
 
-                __insert(new_node,  position);
-                break; 
-
-        case 1: if ( __equal(new_node->key, __begin->key) )
-                    throw KeyError("Key already exists.");
-
-                __insert(new_node, __begin);
-                __begin = new_node;
-                break;
-
-        case -1: if ( __equal(new_node->key, __end->key) )
-                    throw KeyError("Key already exists.");
-
-                 __insert(new_node, __end);
-                 __end = new_node;
-                 break;
-
-        case 2: break;
+        __insert(new_node,  position);
     }
+
+    else
+        __insert_cases(update, new_node);
 
     __insert_process(new_node);
     __size++;
@@ -261,30 +246,16 @@ insert(node_ptr& position, const_node_ref node) {
     __allocator.construct(new_node, node_type(node));
     int update = __insert_update(new_node);
 
-    switch(update) {
+    if (!update) {
 
-        case 0: if ( __equal(new_node->key, position->key) )
+        if ( __equal(new_node->key, position->key) )
                     throw KeyError("Key already exists.");
 
-                __insert(new_node,  position);
-                break; 
-
-        case 1: if ( __equal(new_node->key, __begin->key) )
-                    throw KeyError("Key already exists.");
-
-                __insert(new_node, __begin);
-                __begin = new_node;
-                break;
-
-        case -1: if ( __equal(new_node->key, __end->key) )
-                    throw KeyError("Key already exists.");
-
-                 __insert(new_node, __end);
-                 __end = new_node;
-                 break;
-
-        case 2: break;
+        __insert(new_node,  position);
     }
+
+    else
+        __insert_cases(update, new_node);
 
     __insert_process(new_node);
     __size++;
@@ -329,6 +300,9 @@ inline void rb_tree<node_type, key_type, alloc_type>::erase(const key_type& key)
 
     if ( __equal(node->key, key) )
         erase(node);
+
+    else
+        throw KeyError("Cannot delete key that does not exist.");
 }
 
 
@@ -563,6 +537,33 @@ __insert_update(node_ptr& new_node) {
     }
 
     return 0;
+}
+
+
+template < class node_type,
+           class key_type,
+           class alloc_type >
+inline void rb_tree<node_type, key_type, alloc_type>::
+__insert_cases(const int& update, node_ptr& new_node) {
+
+    switch(update) {
+
+        case 1: if ( __equal(new_node->key, __begin->key) )
+                    throw KeyError("Key already exists.");
+
+                __insert(new_node, __begin);
+                __begin = new_node;
+                break;
+
+        case -1: if ( __equal(new_node->key, __end->key) )
+                    throw KeyError("Key already exists.");
+
+                 __insert(new_node, __end);
+                 __end = new_node;
+                 break;
+
+        case 2: break;
+    }
 }
 
 

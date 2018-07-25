@@ -6,8 +6,7 @@
 # distutils: language=c++
 # cython: boundscheck=False
 # cython: wraparound=False
-# cython: binding=False
-
+# cython: binding=True
 
 
 from libcpp cimport bool
@@ -21,8 +20,8 @@ from libcpp.unordered_map cimport unordered_map
 from libcpp.string cimport string
 from libcpp.utility cimport pair
 from libcpp.vector cimport vector
-from redblackpy.tree_cython_api.types_mapping cimport *
-from redblackpy.tree_cython_api cimport tree as tree
+from ..tree_cython_api.types_mapping cimport *
+from ..tree_cython_api cimport tree as tree
 import pandas as pd
 
 import cython
@@ -344,10 +343,10 @@ cdef class Series:
 
 
     @cython.embedsignature(True)
-    cpdef Series period(self, start, stop, step):
+    cpdef Series uniform(self, start, stop, step):
         """
-        Returns periodic Series from start until stop
-        with period equals step.
+        Returns uniform grid Series from start until stop
+        with step equals step.
         """        
         cdef Series result = Series( dtype=self.dtype, 
                                      interpolate=self.interpolation,
@@ -830,6 +829,11 @@ cdef class Series:
 
 
     def __str__(self):
+
+        return self.dtype_series.__str__()
+
+
+    def __repr__(self):
 
         return self.dtype_series.__str__()
 
