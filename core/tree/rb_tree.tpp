@@ -247,7 +247,6 @@ insert(node_ptr& position, const_node_ref node) {
     int update = __insert_update(new_node);
 
     if (!update) {
-
         if ( __equal(new_node->key, position->key) )
             throw KeyError("Key already exists.");
 
@@ -276,8 +275,7 @@ rb_tree<node_type, key_type, alloc_type>::insert_search(const key_type& key) {
     node_ptr result = __link;
     node_ptr node_type::*side = &node_type::left;
 
-    for(auto it = __root; it != __link;result = it, it = it->*side) {
-
+    for(auto it = __root; it != __link; result = it, it = it->*side) {
         if ( __comp_py(key, it->key) )
             side = &node_type::left;
 
@@ -395,7 +393,6 @@ rb_tree<node_type, key_type, alloc_type>::search(const key_type& key) {
     node_ptr node_type::*side = &node_type::left;
 
     for( ; it != __link; it = it->*side) {
-        
         if ( __comp_py(key, it->key) )
             side = &node_type::left;
 
@@ -423,7 +420,6 @@ linear_search_from(node_ptr it, const key_type& key) {
     iterator end = std::prev( __nodes.end() );
 
     for( ; result != end; result++) {
-
         if ( __equal( (*result)->key, key ) )
             return node_pair( (*result), (*result) );
 
@@ -498,7 +494,6 @@ void rb_tree<node_type, key_type, alloc_type>::
 __insert_process(node_ptr& new_node) {
 
     while (!new_node->parent->color) {
-
         if (new_node->parent == new_node->parent->parent->left) 
             __insert_process_side( new_node, 
                                    &node_type::left,
@@ -521,7 +516,6 @@ int rb_tree<node_type, key_type, alloc_type>::
 __insert_update(node_ptr& new_node) {
 
     if (__size > 0) {
-
         if ( __comp(new_node->key, __begin->key) ) 
             return 1;
 
@@ -552,7 +546,6 @@ void rb_tree<node_type, key_type, alloc_type>::
 __insert_cases(const int& update, node_ptr& new_node) {
 
     switch(update) {
-
         case 1: if ( __equal(new_node->key, __begin->key) )
                     throw KeyError("Key already exists.");
 
@@ -598,7 +591,6 @@ __insert_process_side( node_ptr& new_node, node_ptr node_type::*side_1,
         __insert_process_red(new_node, node_1);
 
     else {
-
         if (new_node == new_node->parent->* side_2) {
             new_node = new_node->parent;
             __rotation(new_node, side_1, side_2);
@@ -681,7 +673,6 @@ void rb_tree<node_type, key_type, alloc_type>::
 __delete_process(node_ptr& node) {
 
     while ( (node != __root) and (node->color) ) {
-
         if (node == node->parent->left)
             __delete_process_side( node, &node_type::left,
                                    &node_type::right );
@@ -717,9 +708,7 @@ __delete_process_side( node_ptr& node, node_ptr node_type::*side_1,
     }
 
     else {
-
         if ( (it->* side_2)->color ) {
-
             (it->* side_1)->color = true;
             it->color = false;
             __rotation(it, side_2, side_1);

@@ -204,7 +204,6 @@ void trees_iterator<tree_type, node_type>::
 __advance(advance_t advance, tail_tree access_1, tail_queue access_2) {
 
     if ( __queue.size() != 0 ) {
-
         if ( __current->second != (__current->first->*access_1)() ) {
             pair_t pair;
             node_iter iter = __current->second;
