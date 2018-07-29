@@ -7,6 +7,8 @@
 # cython: boundscheck=False
 # cython: wraparound=False
 # cython: binding=True
+# cython: profile=False
+# cython: linetrace=False
 
 
 from libcpp cimport bool

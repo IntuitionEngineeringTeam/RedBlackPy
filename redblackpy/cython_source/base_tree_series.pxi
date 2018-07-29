@@ -42,7 +42,7 @@ cdef class __BaseTreeSeries:
     cpdef begin(self):
 
         if self.__index.size() == 0:
-            raise RuntimeError("Index is empty.")
+            raise IndexError("Index is empty.")
 
         return self.__get_key_from_iter( self.__index.begin() )
 
@@ -50,7 +50,7 @@ cdef class __BaseTreeSeries:
     cpdef end(self):
 
         if self.__index.size() == 0:
-            raise RuntimeError("Index is empty.")
+            raise IndexError("Index is empty.")
 
         return self.__get_key_from_iter( self.__index.back() )
 
@@ -67,7 +67,7 @@ cdef class __BaseTreeSeries:
         self.__last_call = deref(self.__index.begin())
 
 
-    cdef rb_tree_ptr get_tree(self):
+    cdef inline rb_tree_ptr get_tree(self):
 
         return self.__index 
 
@@ -93,11 +93,11 @@ cdef class __BaseTreeSeries:
         return False
 
 
-    cdef __get_key_from_ptr(self, node_ptr node):
+    cdef inline __get_key_from_ptr(self, node_ptr node):
 
         return <object>deref(node).key.data
 
 
-    cdef __get_key_from_iter(self, iterator node):
+    cdef inline __get_key_from_iter(self, iterator node):
 
         return <object>deref( deref(node) ).key.data

@@ -9,7 +9,7 @@ cdef inline {DTYPE} __deref_value_ptr_{DTYPE}(node_ptr node):
     return deref( <{DTYPE}*>deref(node).value )
 
 
-cdef void __insert_node_{DTYPE}(rb_tree_ptr& index, key, {DTYPE} value) except*:
+cdef inline void __insert_node_{DTYPE}(rb_tree_ptr& index, key, {DTYPE} value) except*:
 
     cdef void* address = malloc( sizeof({DTYPE}) )
     # assign new value and insert node with address
@@ -17,8 +17,8 @@ cdef void __insert_node_{DTYPE}(rb_tree_ptr& index, key, {DTYPE} value) except*:
     index.insert( rb_node_valued(to_c_pyobject(key), address) )
 
 
-cdef void __insert_node_by_ptr_{DTYPE}( rb_tree_ptr& index, node_ptr& position, 
-                                        key, {DTYPE} value ) except*:
+cdef inline  void __insert_node_by_ptr_{DTYPE}( rb_tree_ptr& index, node_ptr& position, 
+                                        		key, {DTYPE} value ) except*:
 
     cdef void* address = malloc( sizeof({DTYPE}) )
     # assign new value and insert node with address

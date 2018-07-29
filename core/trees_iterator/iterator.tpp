@@ -82,11 +82,11 @@ set_iterator(Iterable& trees, std::string type) {
 
     if (type == "forward")
         __set_iterator( trees, &tree_type::begin, 
-                        &rb_tree<__node_t, __pair>::begin );
+                        &rb_tree<node_t, pair_t>::begin );
 
     else if (type == "reverse")
         __set_iterator( trees, &tree_type::back, 
-                        &rb_tree<__node_t, __pair>::back );
+                        &rb_tree<node_t, pair_t>::back );
 
     else
         throw TypeError("Uknown iterator type.");
@@ -138,7 +138,7 @@ trees_iterator<tree_type, node_type>&
 trees_iterator<tree_type, node_type>::operator++(int) {
 
     __advance( &__next, &tree_type::back, 
-               &rb_tree<__node_t, __pair>::begin );
+               &rb_tree<node_t, pair_t>::begin );
 
     return *this;
 }
@@ -150,7 +150,7 @@ trees_iterator<tree_type, node_type>&
 trees_iterator<tree_type, node_type>::operator--(int) {
 
     __advance( &__prev, &tree_type::begin, 
-               &rb_tree<__node_t, __pair>::back );
+               &rb_tree<node_t, pair_t>::back );
 
     return *this;
 }
@@ -182,8 +182,8 @@ inline node_type& trees_iterator<tree_type, node_type>::operator*() const {
 //-------------------------------------------------------------------------------------------
 template < class tree_type, 
            class node_type >
-inline typename trees_iterator<tree_type, node_type>::__node_iter
-trees_iterator<tree_type, node_type>::__next(__node_iter it) {
+inline typename trees_iterator<tree_type, node_type>::node_iter
+trees_iterator<tree_type, node_type>::__next(node_iter it) {
 
     return std::next(it);
 }
@@ -191,8 +191,8 @@ trees_iterator<tree_type, node_type>::__next(__node_iter it) {
 
 template < class tree_type, 
            class node_type >
-inline typename trees_iterator<tree_type, node_type>::__node_iter
-trees_iterator<tree_type, node_type>::__prev(__node_iter it) {
+inline typename trees_iterator<tree_type, node_type>::node_iter
+trees_iterator<tree_type, node_type>::__prev(node_iter it) {
 
     return std::prev(it);
 }
@@ -201,22 +201,22 @@ trees_iterator<tree_type, node_type>::__prev(__node_iter it) {
 template < class tree_type, 
            class node_type >
 void trees_iterator<tree_type, node_type>::
-__advance( __advance_t advance, __tail_tree access_1, __tail_queue access_2) {
+__advance(advance_t advance, tail_tree access_1, tail_queue access_2) {
 
     if ( __queue.size() != 0 ) {
 
         if ( __current->second != (__current->first->*access_1)() ) {
-            __pair pair;
-            __node_iter iter = __current->second;
-            __node_t* it;
+            pair_t pair;
+            node_iter iter = __current->second;
+            node_t* it;
 
             do {
                 iter = advance(iter);
-                pair = __pair( __current->first, iter);
+                pair = pair_t( __current->first, iter);
                 it = __queue.insert_search(pair);
 
                 if ( !__equal(it->key, pair) ) {
-                    __queue.insert( it, __node_t(pair) );
+                    __queue.insert( it, node_t(pair) );
                     break;
                 }
 
@@ -229,8 +229,8 @@ __advance( __advance_t advance, __tail_tree access_1, __tail_queue access_2) {
             /*
             ( (&__queue)->*access_2 )() - call member function begin() or back() by pointer.
             begin() or back() returns iterators of nodes pointers, so we get the object using *.
-            ( *( (&__queue)->*access_2 )() )->key - this has type trees_iterator::__pair, current
-            has type __pair*, so we get the addres using &. 
+            ( *( (&__queue)->*access_2 )() )->key - this has type trees_iterator::pair_t, __current
+            has type pair_t*, so we get the addres using &. 
             **/
             __current = &( *( (&__queue)->*access_2 )() )->key;
     }
@@ -241,28 +241,28 @@ template < class tree_type,
            class node_type >
 template <class Iterable>
 void trees_iterator<tree_type, node_type>::
-__set_iterator(Iterable& trees, __tail_tree access_1, __tail_queue access_2) {
+__set_iterator(Iterable& trees, tail_tree access_1, tail_queue access_2) {
 
-    __pair pair;
-    __node_t* it;
+    pair_t pair;
+    node_t* it;
 
-    __queue = rb_tree<__node_t, __pair>();
+    __queue = rb_tree<node_t, pair_t>();
     __queue.set_equal(__equal_py);
     __queue.set_compare(__comp_py);
-    __queue.insert( __pair( trees[0], (trees[0]->*access_1)() ) );
+    __queue.insert( pair_t( trees[0], (trees[0]->*access_1)() ) );
 
     for(size_t i = 1; i < trees.size(); i++) {
-        pair = __pair( trees[i], (trees[i]->*access_1)() );
+        pair = pair_t( trees[i], (trees[i]->*access_1)() );
         it = __queue.insert_search(pair);
 
         if ( !__equal(it->key, pair) )
-            __queue.insert( it, __node_t(pair) );
+            __queue.insert( it, node_t(pair) );
     }
     /*
     ( (&__queue)->*access_2 )() - call member function begin() or back() by pointer.
     begin() or back() returns iterators of nodes pointers, so we get the object using *.
-    ( *( (&__queue)->*access_2 )() )->key - this has type trees_iterator::__pair, current
-    has type __pair*, so we get the addres using &. 
+    ( *( (&__queue)->*access_2 )() )->key - this has type trees_iterator::pair_t, __current
+    has type pair_t*, so we get the addres using &. 
     **/
     __current =  &( *( (&__queue)->*access_2 )() )->key;
 }
@@ -271,7 +271,7 @@ __set_iterator(Iterable& trees, __tail_tree access_1, __tail_queue access_2) {
 template < class tree_type, 
            class node_type >
 bool trees_iterator<tree_type, node_type>::
-__comp(const __pair& pair_1, const __pair& pair_2) {
+__comp(const pair_t& pair_1, const pair_t& pair_2) {
 
     int result = __comp_py(pair_1, pair_2);
 
@@ -287,7 +287,7 @@ __comp(const __pair& pair_1, const __pair& pair_2) {
 template < class tree_type, 
            class node_type >
 bool trees_iterator<tree_type, node_type>::
-__equal(const __pair& pair_1, const __pair& pair_2) {
+__equal(const pair_t& pair_1, const pair_t& pair_2) {
 
     int result = __equal_py(pair_1, pair_2);
 

@@ -220,10 +220,10 @@ rb_tree<node_type, key_type, alloc_type>::insert(node_type&& node) {
     if (!update) {
         position = insert_search(new_node->key);
 
-        if ( __equal(new_node->key, position->key) )
-                    throw KeyError("Key already exists.");
+        if ( __equal_py(new_node->key, position->key) == 1 )
+            throw KeyError("Key already exists.");
 
-        __insert(new_node,  position);
+        __insert(new_node, position);
     }
 
     else
@@ -249,9 +249,9 @@ insert(node_ptr& position, const_node_ref node) {
     if (!update) {
 
         if ( __equal(new_node->key, position->key) )
-                    throw KeyError("Key already exists.");
+            throw KeyError("Key already exists.");
 
-        __insert(new_node,  position);
+        __insert(new_node, position);
     }
 
     else
@@ -270,21 +270,22 @@ template < class node_type,
 node_ptr<node_type, key_type, alloc_type> 
 rb_tree<node_type, key_type, alloc_type>::insert_search(const key_type& key) {
 
-    node_ptr it = __root;
+    if (__size != 0)
+        __type_check(key, __root->key);
+
     node_ptr result = __link;
+    node_ptr node_type::*side = &node_type::left;
 
-    while (it != __link) {
-        result = it;
+    for(auto it = __root; it != __link;result = it, it = it->*side) {
 
-        if ( __equal(it->key, key) ) 
-            return it;
+        if ( __comp_py(key, it->key) )
+            side = &node_type::left;
 
-        if ( __comp(key, it->key) )
-            it = it->left;
+        else if ( __comp_py(it->key, key) )
+            side = &node_type::right;
 
-        else 
-            it = it->right;
-
+        else
+            break;
     }
 
     return result; 
@@ -298,7 +299,7 @@ inline void rb_tree<node_type, key_type, alloc_type>::erase(const key_type& key)
 
     node_ptr node = search(key);
 
-    if ( __equal(node->key, key) )
+    if ( __equal_py(node->key, key) )
         erase(node);
 
     else
@@ -348,7 +349,6 @@ ref<node_type, key_type, alloc_type>
 rb_tree<node_type, key_type, alloc_type>::operator=(const_ref other) {
 
     clear();
-    rb_tree();
 
     __comp_py = other.__comp_py;
     __equal_py = other.__equal_py;
@@ -388,18 +388,22 @@ template < class node_type,
 node_ptr<node_type, key_type, alloc_type>
 rb_tree<node_type, key_type, alloc_type>::search(const key_type& key) {
 
+    if (__size != 0)
+        __type_check(key, __root->key);
+
     node_ptr it = __root;
+    node_ptr node_type::*side = &node_type::left;
 
-    while (it != __link) {
+    for( ; it != __link; it = it->*side) {
+        
+        if ( __comp_py(key, it->key) )
+            side = &node_type::left;
 
-        if ( __equal(it->key, key) ) 
-            return it;
+        else if ( __comp_py(it->key, key) )
+            side = &node_type::right;
 
-        if ( __comp(key, it->key) )
-            it = it->left;
-
-        else 
-            it = it->right;
+        else
+            break;
     }
 
     return it; 
@@ -445,10 +449,10 @@ rb_tree<node_type, key_type, alloc_type>::tree_search(const key_type& key) {
 
     node_ptr it = insert_search(key);
 
-    if ( __comp(key, it->key) )
+    if ( __comp_py(key, it->key) )
         return node_pair( *std::prev(it->it_position), it );
 
-    if ( __comp(it->key, key) )
+    if ( __comp_py(it->key, key) )
         return node_pair( it, *std::next(it->it_position) );
 
     return node_pair(it, it);
@@ -521,9 +525,10 @@ __insert_update(node_ptr& new_node) {
         if ( __comp(new_node->key, __begin->key) ) 
             return 1;
 
-        if ( __comp(__end->key, new_node->key) ) {
+        if ( __comp(__end->key, new_node->key) )
             return -1;
-        }
+
+        return 0;    
     }
 
     if (__size == 0) {
@@ -543,7 +548,7 @@ __insert_update(node_ptr& new_node) {
 template < class node_type,
            class key_type,
            class alloc_type >
-inline void rb_tree<node_type, key_type, alloc_type>::
+void rb_tree<node_type, key_type, alloc_type>::
 __insert_cases(const int& update, node_ptr& new_node) {
 
     switch(update) {
@@ -762,7 +767,18 @@ __rotation( node_ptr node, node_ptr node_type::*side_1,
 template < class node_type,
            class key_type,
            class alloc_type >
-bool rb_tree<node_type, key_type, alloc_type>::
+inline void rb_tree<node_type, key_type, alloc_type>::
+__type_check(const key_type& key_1, const key_type& key_2) {
+
+    if (__comp_py(key_1, key_2) == -1)
+        throw TypeError("Your query to tree contains inconsistent key type.");
+}
+
+
+template < class node_type,
+           class key_type,
+           class alloc_type >
+inline bool rb_tree<node_type, key_type, alloc_type>::
 __comp(const key_type& key_1, const key_type& key_2) {
 
     int result = __comp_py(key_1, key_2);
@@ -770,8 +786,7 @@ __comp(const key_type& key_1, const key_type& key_2) {
     if (result != -1)
         return result;
     
-    clear();
-    throw TypeError("Your query to tree contain inconsistent key type.");
+    throw TypeError("Your query to tree contains inconsistent key type.");
 
     return true;
 }
@@ -780,7 +795,7 @@ __comp(const key_type& key_1, const key_type& key_2) {
 template < class node_type,
            class key_type,
            class alloc_type >
-bool rb_tree<node_type, key_type, alloc_type>::
+inline bool rb_tree<node_type, key_type, alloc_type>::
 __equal(const key_type& key_1, const key_type& key_2) {
 
     int result = __equal_py(key_1, key_2);
@@ -788,8 +803,7 @@ __equal(const key_type& key_1, const key_type& key_2) {
     if (result != -1)
         return result;
 
-    clear();
-    throw TypeError("Your query to tree contain inconsistent key type.");
+    throw TypeError("Your query to tree contains inconsistent key type.");
 
     return true;
 }

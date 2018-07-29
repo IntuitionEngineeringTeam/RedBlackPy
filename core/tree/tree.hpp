@@ -207,6 +207,7 @@ class rb_tree {
         void __rotation( node_ptr, node_ptr node_type::*side_1, 
                          node_ptr node_type::*side_2 );
         // Comparators wrappers(__comp_py, __equal_py) for handling Python exceptions
+        void __type_check(const key_type&, const key_type&);
         bool __comp(const key_type&, const key_type&);
         bool __equal(const key_type&, const key_type&);
 };
