@@ -70,7 +70,7 @@ cdef class Series:
         """
         self.dtype = dtype
         self.name = name
-
+        
         if self.dtype == 'uint8':
             self.dtype_series = __TreeSeries_uint8_t.__new__( __TreeSeries_uint8_t, 
                                                               index, values, name, 
@@ -183,10 +183,6 @@ cdef class Series:
 
         else:
             raise TypeError( "Unsupported data type {:}".format(dtype) )
-
-
-    def __cinit__(self):
-        pass
 
 
     #--------------------------------------------------------------------------------------------
@@ -426,8 +422,6 @@ cdef class Series:
         """
         Cast values to specific dtype.
         """
-        self.dtype = dtype
-
         if self.dtype == 'uint8':
 
             if self.dtype_series is None:
@@ -794,6 +788,8 @@ cdef class Series:
 
         else:
             raise TypeError( "Unsupported data type {:}".format(dtype) )
+
+        self.dtype = dtype
 
     #--------------------------------------------------------------------------------------------
     # Pandas convertations

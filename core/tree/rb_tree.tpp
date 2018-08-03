@@ -10,36 +10,6 @@
 //---------------------------------------------------------------------------------------------------------
 // Red-Black Tree template class implementation
 //---------------------------------------------------------------------------------------------------------
-template <class node_type, class key_type, class alloc_type>
-using iterator = typename rb_tree<node_type, key_type, alloc_type>::iterator;
-
-template <class node_type, class key_type, class alloc_type>
-using ptr = typename rb_tree<node_type, key_type, alloc_type>::ptr;
-
-template <class node_type, class key_type, class alloc_type>
-using ref = typename rb_tree<node_type, key_type, alloc_type>::ref;
-
-template <class node_type, class key_type, class alloc_type>
-using const_ref = typename rb_tree<node_type, key_type, alloc_type>::const_ref;
-
-template <class node_type, class key_type, class alloc_type>
-using node_ptr = typename rb_tree<node_type, key_type, alloc_type>::node_ptr;
-
-template <class node_type, class key_type, class alloc_type>
-using node_ref = typename rb_tree<node_type, key_type, alloc_type>::node_ref;
-
-template <class node_type, class key_type, class alloc_type>
-using const_node_ptr = typename rb_tree<node_type, key_type, alloc_type>::const_node_ptr;
-
-template <class node_type, class key_type, class alloc_type>
-using const_node_ref = typename rb_tree<node_type, key_type, alloc_type>::const_node_ref;
-
-template <class node_type, class key_type, class alloc_type>
-using node_pair = typename rb_tree<node_type, key_type, alloc_type>::node_pair;
-
-template <class node_type, class key_type, class alloc_type>
-using size_type = typename rb_tree<node_type, key_type, alloc_type>::size_type;
-//---------------------------------------------------------------------------------------------------------
 
 // Constructors
 //---------------------------------------------------------------------------------------------------------
@@ -104,7 +74,7 @@ rb_tree<node_type, key_type, alloc_type>::~rb_tree() {
 template < class node_type,
            class key_type,
            class alloc_type >
-inline size_type<node_type, key_type, alloc_type>
+inline typename rb_tree<node_type, key_type, alloc_type>::size_type
 rb_tree<node_type, key_type, alloc_type>::size() {
 
     return __size;
@@ -117,8 +87,7 @@ template < class node_type,
 void rb_tree<node_type, key_type, alloc_type>::clear() {
 
     for (size_t i = 0; i < __size; i++)
-        erase(__begin->key);
-    
+        erase(__begin->key);  
 }
 
 
@@ -179,7 +148,7 @@ rb_tree<node_type, key_type, alloc_type>::cend() const {
 template < class node_type,
            class key_type,
            class alloc_type >
-inline node_ptr<node_type, key_type, alloc_type>
+inline typename rb_tree<node_type, key_type, alloc_type>::node_ptr
 rb_tree<node_type, key_type, alloc_type>::insert(const key_type& key) {
 
     return insert( node_type(key) );
@@ -189,7 +158,7 @@ rb_tree<node_type, key_type, alloc_type>::insert(const key_type& key) {
 template < class node_type,
            class key_type,
            class alloc_type >
-inline node_ptr<node_type, key_type, alloc_type>
+inline typename rb_tree<node_type, key_type, alloc_type>::node_ptr
 rb_tree<node_type, key_type, alloc_type>::insert(key_type&& key) {
 
     return insert( node_type(key) );
@@ -199,7 +168,7 @@ rb_tree<node_type, key_type, alloc_type>::insert(key_type&& key) {
 template < class node_type,
            class key_type,
            class alloc_type >
-inline node_ptr<node_type, key_type, alloc_type>
+inline typename rb_tree<node_type, key_type, alloc_type>::node_ptr
 rb_tree<node_type, key_type, alloc_type>::insert(const_node_ref node) {
 
     return insert( std::move( node_type(node) ) );
@@ -209,7 +178,7 @@ rb_tree<node_type, key_type, alloc_type>::insert(const_node_ref node) {
 template < class node_type,
            class key_type,
            class alloc_type >
-node_ptr<node_type, key_type, alloc_type>
+typename rb_tree<node_type, key_type, alloc_type>::node_ptr
 rb_tree<node_type, key_type, alloc_type>::insert(node_type&& node) {
 
     node_ptr new_node = __allocator.allocate(1);
@@ -239,8 +208,9 @@ rb_tree<node_type, key_type, alloc_type>::insert(node_type&& node) {
 template < class node_type,
            class key_type,
            class alloc_type >
-node_ptr<node_type, key_type, alloc_type> rb_tree<node_type, key_type, alloc_type>::
-insert(node_ptr& position, const_node_ref node) {
+typename rb_tree<node_type, key_type, alloc_type>::node_ptr 
+rb_tree<node_type, key_type, alloc_type>::insert( node_ptr& position, 
+                                                  const_node_ref node ) {
 
     node_ptr new_node = __allocator.allocate(1);
     __allocator.construct(new_node, node_type(node));
@@ -266,7 +236,7 @@ insert(node_ptr& position, const_node_ref node) {
 template < class node_type,
            class key_type,
            class alloc_type >
-node_ptr<node_type, key_type, alloc_type> 
+typename rb_tree<node_type, key_type, alloc_type>::node_ptr
 rb_tree<node_type, key_type, alloc_type>::insert_search(const key_type& key) {
 
     if (__size != 0)
@@ -323,8 +293,8 @@ void rb_tree<node_type, key_type, alloc_type>::erase(node_ptr node) {
 template < class node_type,
            class key_type,
            class alloc_type >
-inline void 
-rb_tree<node_type, key_type, alloc_type>::set_compare(key_compare_py compare) {
+inline void rb_tree<node_type, key_type, alloc_type>::
+set_compare(key_compare_py compare) {
 
     __comp_py = compare;
 }
@@ -333,8 +303,8 @@ rb_tree<node_type, key_type, alloc_type>::set_compare(key_compare_py compare) {
 template < class node_type,
            class key_type,
            class alloc_type >
-inline void 
-rb_tree<node_type, key_type, alloc_type>::set_equal(key_compare_py equal) {
+inline void rb_tree<node_type, key_type, alloc_type>::
+set_equal(key_compare_py equal) {
 
     __equal_py = equal;
 }
@@ -343,7 +313,7 @@ rb_tree<node_type, key_type, alloc_type>::set_equal(key_compare_py equal) {
 template < class node_type,
            class key_type,
            class alloc_type >
-ref<node_type, key_type, alloc_type>
+typename rb_tree<node_type, key_type, alloc_type>::ref
 rb_tree<node_type, key_type, alloc_type>::operator=(const_ref other) {
 
     clear();
@@ -363,7 +333,7 @@ rb_tree<node_type, key_type, alloc_type>::operator=(const_ref other) {
 template < class node_type,
            class key_type,
            class alloc_type >
-inline node_ptr<node_type, key_type, alloc_type>
+inline typename rb_tree<node_type, key_type, alloc_type>::node_ptr
 rb_tree<node_type, key_type, alloc_type>::root() {
 
     return __root;
@@ -373,7 +343,7 @@ rb_tree<node_type, key_type, alloc_type>::root() {
 template < class node_type,
            class key_type,
            class alloc_type >
-inline node_ptr<node_type, key_type, alloc_type>
+inline typename rb_tree<node_type, key_type, alloc_type>::node_ptr
 rb_tree<node_type, key_type, alloc_type>::link() {
 
     return __link;
@@ -383,7 +353,7 @@ rb_tree<node_type, key_type, alloc_type>::link() {
 template < class node_type,
            class key_type,
            class alloc_type >
-node_ptr<node_type, key_type, alloc_type>
+typename rb_tree<node_type, key_type, alloc_type>::node_ptr
 rb_tree<node_type, key_type, alloc_type>::search(const key_type& key) {
 
     if (__size != 0)
@@ -410,7 +380,8 @@ rb_tree<node_type, key_type, alloc_type>::search(const key_type& key) {
 template < class node_type,
            class key_type,
            class alloc_type >
-node_pair<node_type, key_type, alloc_type> rb_tree<node_type, key_type, alloc_type>::
+typename rb_tree<node_type, key_type, alloc_type>::node_pair 
+rb_tree<node_type, key_type, alloc_type>::
 linear_search_from(node_ptr it, const key_type& key) {
 
     if ( __comp(key, it->key) )
@@ -434,7 +405,7 @@ linear_search_from(node_ptr it, const key_type& key) {
 template < class node_type,
            class key_type,
            class alloc_type >
-node_pair<node_type, key_type, alloc_type> 
+typename rb_tree<node_type, key_type, alloc_type>::node_pair
 rb_tree<node_type, key_type, alloc_type>::tree_search(const key_type& key) {
 
     if ( __comp(key, __begin->key) )

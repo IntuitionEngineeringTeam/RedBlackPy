@@ -30,8 +30,7 @@ cdef class __TreeSeries_{DTYPE}(__BaseTreeSeries):
 
 
     def __cinit__( self, object index=None, object values=None, str name="Untitled", 
-                   str interpolate="floor", {DTYPE} extrapolate=0, 
-                   str arithmetic="left" ):
+                   str interpolate="floor", {DTYPE} extrapolate=0, str arithmetic="left" ):
 
         self.set_interpolation(interpolate)
         self.extrapolate = extrapolate
