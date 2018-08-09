@@ -475,7 +475,7 @@ pre .line-highlight {
 <body>
 
 <div id="toc_container" style="position:fixed;width: 200px;left:1em;top:1em">
-<h3> <font color=#e2e6ee> RedBlackPy </font> </h3>
+<h3> <font color=#e2e6ee> RedBlackPy 0.1.0 </font>  </h3>
   <h4> <font color=#e2e6ee> Table of contents: </font> </h4>
   <div id="expanded" style="display: true">
     <a href="./doc_index.html" class="button">Main</a> <br>
@@ -545,6 +545,47 @@ series.set_interpolation(&#39;ceil&#39;)
 # prints 1 - value for dt.datetime(2018,1,3), as now ceil interpolation is set.
 print( series[dt.datetime(2018,1,2)] )
 
+</code></pre></div>
+
+<h2 id="toc_3">SeriesIterator</h2>
+
+<div><pre><code class="language-python">import redblackpy as rb
+import random
+
+def create_random_series(length):
+  
+  data = random.sample(range(5000000), length)
+  # with no loss of generality using one list for index and values
+  return rb.Series(index=data, values=data, dtype=&#39;int64&#39;)
+
+
+#------------------------------------------------------------------------
+# create timer for executing time evaluation
+timer = rb.Timer()
+
+# create list of 10 Series, each contains 100k values
+series_list = [ create_random_series(100000) for i in range(10) ]
+
+# start time evaluation, we including initialization of SeriesIterator
+timer.start()
+iterator = rb.SeriesIterator(series_list)
+# iterating over union of ten Series
+for key in iterator():
+  key
+# stop timer  
+time_forward = timer.stop()
+
+# the same procedure, but for reverse iterator
+timer.start()
+# iterating over union of ten Series
+for key in iterator(&#39;reverse&#39;):
+  key
+# stop timer  
+time_reverse = timer.stop()
+# obtain the results
+output_str = &#39;Time forward: {:}; Time reverse: {:}&#39;.format( time_forward, 
+                                                            time_reverse )
+print(output_str)
 </code></pre></div>
 
 
