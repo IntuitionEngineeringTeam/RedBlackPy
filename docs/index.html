@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>RedBlackPy</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	
+	<link rel="apple-touch-icon" href="apple-touch-icon-iphone.png" />
+	<link rel="apple-touch-icon" sizes="72x72" href="apple-touch-icon-ipad.png" />
+	<link rel="apple-touch-icon" sizes="114x114" href="apple-touch-icon-iphone-retina.png" />
+	<link rel="apple-touch-icon" sizes="144x144" href="apple-touch-icon-ipad-retina.png" />
+	<link rel="shortcut icon" type="image/png" href="favicon.png" />
+	
+	<link href='http://fonts.googleapis.com/css?family=PT+Sans:400,700|PT+Serif:400,700&subset=latin,cyrillic-ext' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="node_modules/video.js/dist/video-js.min.css" media="all" />
+	<link rel="stylesheet" href="styles/styles.css" media="all" />
+</head>
+<body>
+	<svg style="display: none;"><defs>
+		<g id="svg-phone"><path d="M24.5,13.4c-0.3-0.7-0.7-1.8-1.4-2.2c-0.4-0.3-1.7-0.4-2.1-0.1c-0.4,0.3-0.8,0.7-1.2,1 c-0.4,0.4-0.9,0.9-1.3,1.3c-0.6,0.6-1.5,0.9-2.4,1c-0.5,0.1-1,0.1-1.5,0.1c-0.5,0-1,0-1.5-0.1c-0.9-0.1-1.8-0.4-2.4-1 c-0.5-0.4-0.9-0.9-1.3-1.3c-0.4-0.4-0.8-0.7-1.2-1c-0.4-0.3-1.7-0.2-2.1,0.1c-0.7,0.4-1.1,1.4-1.4,2.2c-0.3,0.7-0.8,4.4-0.6,4.8 c0.4,0.7,1.1,1,2,1c2.7,0,5.7,0,8.3,0v0c0,0,0.1,0,0.1,0s0.1,0,0.1,0v0c2.7,0,5.7,0,8.3,0c0.9,0,1.7-0.3,2-1 C25.3,17.7,24.8,14.1,24.5,13.4z"/><path d="M14.6,5.8C14.6,5.8,14.6,5.8,14.6,5.8C14.6,5.8,14.6,5.8,14.6,5.8c-2.3,0-4.2,1.4-4.2,3.2s1.9,3.2,4.2,3.2 c0,0,0,0,0,0s0,0,0,0c2.3,0,4.2-1.4,4.2-3.2S16.9,5.8,14.6,5.8z"/><path d="M29.1,6.2c-0.3-1.3-0.5-2.3-1.4-3.3c-0.7-0.8-1.6-1.2-2.5-1.5c-2.3-0.8-4.7-1.1-7.2-1.3 c-0.5,0-2.2-0.1-2.7-0.1c-0.2,0-0.5,0-0.7,0c-0.2,0-0.4,0-0.7,0c-0.5,0-2.2,0.1-2.7,0.1C8.8,0.3,6.4,0.6,4.1,1.4 C3.1,1.8,2.2,2.2,1.5,2.9C0.6,3.9,0.4,5,0.1,6.2c-0.2,0.6-0.2,2.1,0.6,2.1c2,0,3.4,0,5.4,0c0.3,0,0.5-0.1,0.6-0.4 C6.8,7.5,7,7.2,7.1,6.8c0.3-1.1,1-1.7,2.2-1.9c1.6-0.3,3.6-0.5,5.4-0.5c1.8,0,3.8,0.2,5.4,0.5c1.2,0.2,1.8,0.9,2.2,1.9 c0.1,0.4,0.3,0.7,0.4,1.1c0.1,0.3,0.3,0.4,0.6,0.4c2,0,3.4,0,5.4,0C29.3,8.3,29.3,6.8,29.1,6.2z"/></g>
+		
+		<!-- <svg class="svg-icon"><use xlink:href="#id"></use></svg> -->
+	</defs></svg>
+	<div class="wrapper">
+		<div  class="video">
+			<video class="video-js" id="video" video autoplay loop muted playsinline webkit-playinginline>
+				<source src="video/br_tree_1807171.mp4"></source>
+			</video>
+		</div> 
+		<div class="wrapper__body">
+			<div class="wrapper__info">
+				<h1>RedBlackPy v1.2</h1>
+				<div class="main-info">
+					<p>Fast and scalable data structures for dynamic ordered data processing.</p>	
+					<p>RedBlackPy is a Python library built on red-black trees instead of hash-tables and arrays for convenient work with time series and scientific evaluations.</p>
+				</div>
+			</div>
+
+			<div class="wrapper__contact">
+				<div class="main-menu__block">
+					<nav class="main-menu">
+						<ul>
+							<li><a href="./doc_index.html">Docs</a></li>
+							<li><a href="">User Guide</a></li>
+						</ul>
+					</nav>
+
+					<nav class="main-menu">
+						<ul>
+							<li><a href="https://github.com/IntuitionEngineeringTeam/RedBlackPy">Github</a></li>
+							<li><a href="https://github.com/IntuitionEngineeringTeam/RedBlackPy/archive/master.zip">Download</a></li>
+						</ul>
+					</nav>
+				</div>
+
+				<div class="contact">
+					<div class="contact__item">
+						<div class="contact__title">Maintainer</div>
+						<a class="contact__data" href="mailto:dev@intuition.engineering">dev@intuition.engineering</a>
+					</div>
+					<div class="contact__item">
+						<div class="contact__title">CoRe developer</div>
+						<a class="contact__data" href="mailto:hypo@intuition.engineering">hypo@intuition.engineering</a>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+	<!-- Footer Scripts -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<!-- Custom js scripts -->
+	<script src="js/main.js"></script>
+</body>
+</html>
