@@ -9,8 +9,8 @@ from setuptools import setup
 from setuptools.command.build_ext import build_ext
 from distutils.extension import Extension
 from Cython.Build import cythonize
-from setup_tools.code_generation import generate_from_cython_src
-from setup_tools.types import TYPES
+from rbp_setup_tools.code_generation import generate_from_cython_src
+from rbp_setup_tools.types import TYPES
 
 
 if platform.system() == 'Darwin':
@@ -108,6 +108,14 @@ setup( name='redblackpy',
        url='https://intuitionengineeringteam.github.io/RedBlackPy/',
        download_url='https://github.com/IntuitionEngineeringTeam/RedBlackPy/archive/master.zip',
        zip_safe=False,
-       packages=['redblackpy', 'redblackpy.series', 'redblackpy.benchmark'],
+       packages=[ 'redblackpy', 'redblackpy.series', 
+                  'redblackpy.benchmark', 'rbp_setup_tools' ],
        package_data={'redblackpy.series': ['*.pxd']},
-       license='Apache License 2.0' )
+       license='Apache License 2.0', 
+       long_description='RedBlackPy is a light Python library that provides data structures \
+       aimed to fast insertion, removal and self sorting to manipulating ordered data in efficient way.\
+      The core part of the library had been written on C++ and then was wrapped in Cython. \
+      Hope that many would find the primary data structures of this library very handy in working \
+      with time series. One of the main feature of this structures is an access by arbitrary \
+      key using interpolation, what makes processing of multiple non synchronized time series very simple.\
+      All data structures based on red black trees.' )

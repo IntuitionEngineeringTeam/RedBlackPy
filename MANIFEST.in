@@ -1,0 +1,7 @@
+recursive-include ./core *
+recursive-include ./redblackpy *
+recursive-include ./benchmark *
+recursive-include ./series *
+recursive-include ./tree_cython_api *
+recursive-include ./setup_tools *
+recursive-include ./cython_source *
