@@ -245,7 +245,9 @@ rb_tree<node_type, key_type, alloc_type>::insert_search(const key_type& key) {
     node_ptr result = __link;
     node_ptr node_type::*side = &node_type::left;
 
-    for(auto it = __root; it != __link; result = it, it = it->*side) {
+    for(auto it = __root; it != __link; it = it->*side) {
+        result = it;
+
         if ( __comp_py(key, it->key) )
             side = &node_type::left;
 

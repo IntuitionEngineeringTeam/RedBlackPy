@@ -70,7 +70,7 @@ cdef class Series:
         """
         self.dtype = dtype
         self.name = name
-        
+
         if self.dtype == 'uint8':
             self.dtype_series = __TreeSeries_uint8_t.__new__( __TreeSeries_uint8_t, 
                                                               index, values, name, 
