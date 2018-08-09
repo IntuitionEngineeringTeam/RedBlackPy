@@ -6,8 +6,7 @@ RedBlackPy is a light Python library that provides data structures aimed to fast
 
 <center> <h3>Installation </h3> </center>
 <h5> 1. Build and install from source </h5>
-Download project source from [GitHub](https://github.com/IntuitionEngineeringTeam/RedBlackPy)
-and run in your command line
+Download project source and run in your command line
 
 ~~~shell
 >> python setup.py install
@@ -25,7 +24,7 @@ The first release is presented by two classes: Series and SeriesIterator. See do
 
 <br>
 <center> <h3>Cython Users</h3> </center>
-We have include pxd files for Cython users. See [source](https://github.com/IntuitionEngineeringTeam/RedBlackPy/blob/master/redblackpy/series/tree_series.pxd). 
+We have include pxd files for Cython users. See source.
 
 <br>
 <center> <h3>Contact us</h3> </center>
