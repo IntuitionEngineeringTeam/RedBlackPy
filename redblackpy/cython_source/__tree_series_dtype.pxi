@@ -295,9 +295,20 @@ cdef class __TreeSeries_{DTYPE}(__BaseTreeSeries):
         cdef str out_format = '{key}: {value}\n'
         cdef str result = 'Series object ' + self.name + '\n'
         cdef tuple it
+        cdef list items = self.items()
 
-        for it in self.iteritems():
-            result += out_format.format(key=it[0], value=it[1])
+        if len(items) <= 50: 
+            for it in items:
+                result += out_format.format(key=it[0], value=it[1])
+
+        else:
+            for it in items[:25]:
+                result += out_format.format(key=it[0], value=it[1])
+
+            result += '...\n'
+
+            for it in items[-25:]:
+                result += out_format.format(key=it[0], value=it[1])
 
         return result
 
