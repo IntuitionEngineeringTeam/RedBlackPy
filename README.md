@@ -3,6 +3,8 @@
 
 <h3>Now available for Python 3.6+ on MacOS and Linux (Windows in near future).</h3>
 
+### Read a little review article with code examples at [TowardsDataScience](https://towardsdatascience.com/redblackpy-fast-and-scalable-series-for-scientific-and-quantitative-research-in-python-cad49b5c6d3).
+
 RedBlackPy is a light Python library that provides data structures aimed to fast insertion, removal and self sorting to manipulating ordered data in efficient way. The core part of the library had been written on C++ and then was wrapped in <a href="http://cython.org">Cython</a>. Hope that many would find the primary data structures of this library very handy in working with time series. One of the main feature of this structures is an access by arbitrary  key using interpolation, what makes processing of multiple non synchronized time series very simple. All data structures based on red black trees.
 
 
