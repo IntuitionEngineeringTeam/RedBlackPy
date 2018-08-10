@@ -7,6 +7,12 @@ RedBlackPy is a light Python library that provides data structures aimed to fast
 
 
 <center> <h3>Installation </h3> </center>
+Now RedBlackPy requires Cython installation. If you have not Cython, run in your command line:
+
+~~~shell
+>> pip install cython
+~~~
+
 <h5> 1. Build and install from source </h5>
 Download project source and run in your command line
 
