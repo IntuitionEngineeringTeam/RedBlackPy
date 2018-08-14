@@ -30,7 +30,8 @@ Run in your command line
 ~~~
 
 <center> <h3>Package content</h3> </center>
-The first release is presented by two classes: Series and SeriesIterator. See documnetation and user guide for usage.
+The first release is presented by two classes: Series and SeriesIterator. 
+See [documnetation](https://intuitionengineeringteam.github.io/RedBlackPy/doc_index.html) for usage.
 
 <br>
 <center> <h3>Cython Users</h3> </center>
