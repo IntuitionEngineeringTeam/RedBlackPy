@@ -34,7 +34,6 @@ Run in your command line
 The first release is presented by two classes: Series and SeriesIterator. 
 See [Documentation and User Guide](https://intuitionengineeringteam.github.io/RedBlackPy/doc_index.html) for usage.
 
-<br>
 <center> <h3>Cython Users</h3> </center>
 We have include pxd files for Cython users. See source.
 
