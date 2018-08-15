@@ -40,7 +40,7 @@ cdef void __erase_node_{DTYPE}(rb_tree_ptr& index, key) except*:
         index.erase(node)
 
 
-cdef inline void __set_value_{DTYPE}(node_ptr node, {DTYPE} value) nogil:
+cdef inline void __set_value_{DTYPE}(node_ptr node, {DTYPE} value) nogil except*:
 
     if deref(node).value != NULL:
         (<{DTYPE}*>deref(node).value)[0] = value
@@ -50,7 +50,7 @@ cdef inline void __set_value_{DTYPE}(node_ptr node, {DTYPE} value) nogil:
         (<{DTYPE}*>deref(node).value)[0] = value
 
 
-cdef inline void __dealloc_value_{DTYPE}(node_ptr node) nogil:
+cdef inline void __dealloc_value_{DTYPE}(node_ptr node) nogil except*:
 
     if deref(node).value != NULL:
         free(deref(node).value)

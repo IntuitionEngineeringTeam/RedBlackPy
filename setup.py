@@ -1,6 +1,6 @@
 #
 #  Created by Soldoskikh Kirill.
-#  Copyright © 2018 Intuition. All rights reserved.
+#  Copyright 2018 Intuition. All rights reserved.
 #
 
 import os
@@ -100,7 +100,7 @@ setup( name='redblackpy',
        ext_modules = cythonize(ext_modules),
        version='0.1.0.0',
        author='Solodskikh Kirill',
-       author_email='solodskihkirill@gmail.com',
+       author_email='hypo@intuition.engineering',
        maintainer='Intuition',
        maintainer_email='dev@intuition.engineering',
        install_requires=['cython>=0.27', 'pandas'],

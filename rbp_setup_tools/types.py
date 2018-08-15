@@ -1,6 +1,6 @@
 #
 #  Created by Soldoskikh Kirill.
-#  Copyright © 2018 Intuition. All rights reserved.
+#  Copyright 2018 Intuition. All rights reserved.
 #
 
 TYPES = [ 'uint8_t', 'uint16_t', 'uint32_t', 'uint64_t','uint96_t', 'uint128_t',
