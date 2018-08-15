@@ -1,7 +1,7 @@
 <center> <h1>RedBlackPy </h1> </center>
 <center> <h4>Fast and scalable data structures for scientific and quantitative research in Python </h4> </center>
 
-<h3>Now available for Python 3.6+ on MacOS and Linux (Windows in near future).</h3>
+<h3>Now available for Python 2.7 and 3.0+ on MacOSX(>=10.7) and Linux (Windows in near future).</h3>
 
 ### Read a little review article with code examples at [TowardsDataScience](https://towardsdatascience.com/redblackpy-fast-and-scalable-series-for-scientific-and-quantitative-research-in-python-cad49b5c6d3).
 
