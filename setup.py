@@ -16,7 +16,7 @@ from rbp_setup_tools.types import TYPES
 if platform.system() == 'Darwin':
 
     compile_opts = [ '-std=c++11', 
-                     '-mmacosx-version-min=10.9',  
+                     '-mmacosx-version-min=10.7',  
                      '-stdlib=libc++', 
                      '-Ofast' ]
 
@@ -98,7 +98,7 @@ ext_modules=[ Extension( "redblackpy.series.tree_series",
 
 setup( name='redblackpy',
        ext_modules = cythonize(ext_modules),
-       version='0.1.0.0',
+       version='0.1.1.0',
        author='Solodskikh Kirill',
        author_email='hypo@intuition.engineering',
        maintainer='Intuition',
@@ -114,8 +114,10 @@ setup( name='redblackpy',
        license='Apache License 2.0', 
        long_description='RedBlackPy is a light Python library that provides data structures \
        aimed to fast insertion, removal and self sorting to manipulating ordered data in efficient way.\
-      The core part of the library had been written on C++ and then was wrapped in Cython. \
-      Hope that many would find the primary data structures of this library very handy in working \
-      with time series. One of the main feature of this structures is an access by arbitrary \
-      key using interpolation, what makes processing of multiple non synchronized time series very simple.\
-      All data structures based on red black trees.' )
+       The core part of the library had been written on C++ and then was wrapped in Cython. \
+       Hope that many would find the primary data structures of this library very handy in working \
+       with time series. One of the main feature of this structures is an access by arbitrary \
+       key using interpolation, what makes processing of multiple non synchronized time series very simple.\
+       All data structures based on red black trees.',
+       classifiers = [ 'Programming Language :: Python :: 2.7',
+                       'Programming Language :: Python :: 3' ] )
