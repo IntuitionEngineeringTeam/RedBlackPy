@@ -1,6 +1,6 @@
 #
 #  Created by Soldoskikh Kirill.
-#  Copyright © 2018 Intuition. All rights reserved.
+#  Copyright 2018 Intuition. All rights reserved.
 #
 
 # Generates templated source code for multiple types.

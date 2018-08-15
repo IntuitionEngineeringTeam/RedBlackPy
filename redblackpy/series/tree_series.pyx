@@ -808,7 +808,9 @@ cdef class Series:
         """
         Initialize Series object from pandas.Series.
         """
-        cdef Series result = Series( dtype=str(pd_series.dtype), 
+        cdef Series result = Series( index=pd_series.index,
+                                     values=pd_series.data,
+                                     dtype=str(pd_series.dtype), 
                                      interpolate=interpolate,
                                      extrapolate=extrapolate,
                                      arithmetic=arithmetic )
