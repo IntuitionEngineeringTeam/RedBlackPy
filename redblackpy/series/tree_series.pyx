@@ -422,6 +422,8 @@ cdef class Series:
         """
         Cast values to specific dtype.
         """
+        self.dtype = dtype
+        
         if self.dtype == 'uint8':
 
             if self.dtype_series is None:
