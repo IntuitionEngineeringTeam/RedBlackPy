@@ -852,7 +852,17 @@ cdef class Series:
 
     def __getitem__(self, key):
 
-        return self.dtype_series.__getitem__(key)
+        if not isinstance(key, slice):
+            return self.dtype_series.__getitem__(key)
+
+        result = Series( dtype=self.dtype, 
+                         interpolate=self.interpolation,
+                         extrapolate=self.extrapolation,
+                         arithmetic=self.arithmetic )
+
+        (<Series>result).dtype_series = self.dtype_series.__getitem__(key)
+
+        return result
 
 
     def __setitem__(self, key, value):
