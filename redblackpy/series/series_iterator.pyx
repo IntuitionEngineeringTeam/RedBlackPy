@@ -6,7 +6,7 @@
 # distutils: language=c++
 # cython: boundscheck=False
 # cython: wraparound=False
-# cython: binding=True
+# cython: binding=False
 
 from libcpp cimport bool
 from libcpp.utility cimport pair
@@ -27,6 +27,7 @@ cimport cython
 #--------------------------------------------------------------------------------------------
 # Iterator-generator on multiple Series
 #--------------------------------------------------------------------------------------------
+@cython.binding(True)
 @cython.embedsignature(True)
 cdef class SeriesIterator:
     """
