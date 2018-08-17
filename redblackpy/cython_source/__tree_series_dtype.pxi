@@ -167,6 +167,9 @@ cdef class __TreeSeries_{DTYPE}(__BaseTreeSeries):
 
             return result
 
+        if self.__get_key_from_iter(begin) > self.__get_key_from_iter(end):
+            return result
+
         while True:
             result.insert( self.__get_key_from_iter(begin), 
                            __deref_value_ptr_{DTYPE}( deref(begin) ) )
