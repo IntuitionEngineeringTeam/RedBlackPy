@@ -28,9 +28,11 @@ cdef inline int compare_func(const c_pyobject& a_1, const c_pyobject& a_2) with 
 
     return PyObject_RichCompareBool(a_1.data, a_2.data, Py_LT)
     
+
 cdef inline int equal(const c_pyobject& a_1, const c_pyobject& a_2) with gil:
 
     return PyObject_RichCompareBool(a_1.data, a_2.data, Py_EQ)
+
 
 cdef inline int comp_pair( const pair[rb_tree_ptr, iterator]& a_1,
                            const pair[rb_tree_ptr, iterator]& a_2 ) with gil:
