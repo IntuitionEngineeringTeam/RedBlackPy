@@ -268,12 +268,10 @@ cdef class __TreeSeries_{DTYPE}(__BaseTreeSeries):
                 self.insert( it[0], num )
 
         elif to_type == "str":
-            
             for it in other.iteritems():
                 self.insert( it[0], str(it[1]) )
 
         else:
-
             for it in other.iteritems():
                 self.insert(it[0], it[1])
 
@@ -608,7 +606,6 @@ cdef class __TreeSeries_{DTYPE}(__BaseTreeSeries):
         other.on_itermode()
 
         while not iterator.empty():
-
             key = <object>deref(iterator).key.data
             current = action(self.__getitem__(key), other[key])
             __insert_node_{DTYPE}(result.__index, key, current)

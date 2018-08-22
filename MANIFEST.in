@@ -1,7 +1,5 @@
-recursive-include ./core *
-recursive-include ./redblackpy *
-recursive-include ./benchmark *
-recursive-include ./series *
-recursive-include ./tree_cython_api *
-recursive-include ./setup_tools *
-recursive-include ./cython_source *
+recursive-include core/tree/ *.hpp *.tpp
+recursive-include core/trees_iterator/ *.hpp *.tpp
+recursive-include core/exceptions/ *.hpp
+recursive-include redblackpy/tree_cython_api/ *.pxd
+
