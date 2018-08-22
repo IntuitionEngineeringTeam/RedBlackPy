@@ -524,7 +524,7 @@ cpdef Series test():
     
     return myseries</code></pre></div>
 
-<p>Also, include necessary directories with .hpp headers to compile your extension module by adding <code>inclide_dirs</code> parameter in <code>Extension</code> object:</p>
+<p>Also, include necessary directories with .hpp headers to compile your extension module by adding <code>include_dirs</code> parameter in <code>Extension</code> object:</p>
 
 <div><pre><code class="language-python"># setup.py
 
@@ -538,7 +538,7 @@ ex = Extension( &quot;your_module.your_ex&quot;,
                 include_dirs=[rb.get_include()] )
 
 setup( name=&#39;your_module&#39;,
-          ext_modules = cythonize(ex) )
+       ext_modules = cythonize(ex) )
 </code></pre></div>
 
 <p><br>
