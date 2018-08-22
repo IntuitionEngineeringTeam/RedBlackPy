@@ -12,5 +12,5 @@ __all__ = ['Series', 'SeriesIterator', 'Timer']
 
 def get_include():
 
-	return dirname(dirname(abspath(__file__)))
+	return dirname(abspath(__file__))
 
