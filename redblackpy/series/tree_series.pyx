@@ -24,7 +24,6 @@ from libcpp.utility cimport pair
 from libcpp.vector cimport vector
 from ..tree_cython_api.types_mapping cimport *
 from ..tree_cython_api cimport tree as tree
-import pandas as pd
 
 import cython
 cimport cython
@@ -802,6 +801,8 @@ cdef class Series:
         """
         Convert to pandas.Series.
         """
+        import pandas as pd
+
         return pd.Series( data=self.values(), index=self.index() )
 
 
@@ -811,6 +812,8 @@ cdef class Series:
         """
         Initialize Series object from pandas.Series.
         """
+        import pandas as pd
+        
         cdef Series result = Series( index=pd_series.index,
                                      values=pd_series.data,
                                      dtype=str(pd_series.dtype), 
