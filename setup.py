@@ -70,7 +70,7 @@ ext_modules=[ Extension( "redblackpy.series.tree_series",
                          sources=["redblackpy/series/tree_series.pyx"],
                          extra_compile_args=compile_opts,
                          language = "c++",
-                         include_dirs=['./'],
+                         include_dirs=['./redblackpy'],
                          depends=[ 'core/tree/tree.hpp',
                                    'core/tree/rb_tree.tpp'
                                    'core/tree/rb_node.tpp',
@@ -82,7 +82,7 @@ ext_modules=[ Extension( "redblackpy.series.tree_series",
                          sources=["redblackpy/series/series_iterator.pyx"],
                          extra_compile_args=compile_opts,
                          language = "c++",
-                         include_dirs=['./'],
+                         include_dirs=['./redblackpy'],
                          depends=[ 'core/tree/tree.hpp',
                                    'core/tree/rb_tree.tpp'
                                    'core/tree/rb_node.tpp',
@@ -94,7 +94,7 @@ ext_modules=[ Extension( "redblackpy.series.tree_series",
                          sources=["redblackpy/benchmark/timer.pyx"],
                          extra_compile_args=compile_opts,
                          language = "c++",
-                         include_dirs=['./'] ) ]
+                         include_dirs=['./redblackpy'] ) ]
 
 setup( name='redblackpy',
        ext_modules = cythonize(ext_modules),
@@ -108,13 +108,9 @@ setup( name='redblackpy',
        url='https://intuitionengineeringteam.github.io/RedBlackPy/',
        download_url='https://github.com/IntuitionEngineeringTeam/RedBlackPy/archive/master.zip',
        zip_safe=False,
-       packages=[ '', 'redblackpy', 'redblackpy.series', 
+       packages=[ 'redblackpy', 'redblackpy.series', 
                   'redblackpy.benchmark', 'redblackpy.tree_cython_api'],
-       package_data={'redblackpy.series': ['*.pxd'],
-                     '': ['/core/tree/*.hpp', 
-                          '/core/tree/*.tpp', 
-                          '/core/trees_iterator/*.hpp', 
-                          '/core/trees_iterator/*.tpp']},
+       package_data={'redblackpy.series': ['*.pxd']},
        include_package_data=True,
        license='Apache License 2.0', 
        long_description='RedBlackPy is a light Python library that provides data structures \
@@ -124,5 +120,7 @@ setup( name='redblackpy',
        with time series. One of the main feature of this structures is an access by arbitrary \
        key using interpolation, what makes processing of multiple non synchronized time series very simple.\
        All data structures based on red black trees.',
-       classifiers = [ 'Programming Language :: Python :: 2.7',
+       classifiers = [ 'Programming Language :: C++ :: '
+                       'Programming Language :: Cython'
+                       'Programming Language :: Python :: 2.7',
                        'Programming Language :: Python :: 3' ] )
