@@ -120,7 +120,5 @@ setup( name='redblackpy',
        with time series. One of the main feature of this structures is an access by arbitrary \
        key using interpolation, what makes processing of multiple non synchronized time series very simple.\
        All data structures based on red black trees.',
-       classifiers = [ 'Programming Language :: C++ :: ',
-                       'Programming Language :: Cython',
-                       'Programming Language :: Python :: 2.7',
+       classifiers = [ 'Programming Language :: Python :: 2.7',
                        'Programming Language :: Python :: 3' ] )
