@@ -1,5 +1,5 @@
 recursive-include core/tree/ *.hpp *.tpp
 recursive-include core/trees_iterator/ *.hpp *.tpp
 recursive-include core/exceptions/ *.hpp
-recursive-include redblackpy/tree_cython_api/ *.pxd
-
+recursive-include core/timer/ *.hpp
+recursive-include redblackpy/ *
