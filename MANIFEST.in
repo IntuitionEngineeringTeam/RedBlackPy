@@ -1,1 +1,2 @@
 recursive-include redblackpy/ *
+recursive-include rbp_setup_tools/ *
