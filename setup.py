@@ -16,8 +16,7 @@ from rbp_setup_tools.types import TYPES
 if platform.system() == 'Darwin':
 
     compile_opts = [ '-std=c++11', 
-                     '-mmacosx-version-min=10.7',  
-                     '-stdlib=libc++', 
+                     '-mmacosx-version-min={:}'.format( platform.mac_ver()[0] ),
                      '-Ofast' ]
 
 elif platform.system() == 'Linux':
@@ -69,6 +68,7 @@ output_4.close()
 ext_modules=[ Extension( "redblackpy.series.tree_series",
                          sources=["redblackpy/series/tree_series.pyx"],
                          extra_compile_args=compile_opts,
+                         extra_link_args=compile_opts[:-1],
                          language = "c++",
                          include_dirs=['./redblackpy'],
                          depends=[ 'core/tree/tree.hpp',
@@ -81,6 +81,7 @@ ext_modules=[ Extension( "redblackpy.series.tree_series",
               Extension( "redblackpy.series.series_iterator",
                          sources=["redblackpy/series/series_iterator.pyx"],
                          extra_compile_args=compile_opts,
+                         extra_link_args=compile_opts[:-1],
                          language = "c++",
                          include_dirs=['./redblackpy'],
                          depends=[ 'core/tree/tree.hpp',
@@ -93,6 +94,7 @@ ext_modules=[ Extension( "redblackpy.series.tree_series",
               Extension( "redblackpy.benchmark.timer",
                          sources=["redblackpy/benchmark/timer.pyx"],
                          extra_compile_args=compile_opts,
+                         extra_link_args=compile_opts[:-1],
                          language = "c++",
                          include_dirs=['./redblackpy'] ) ]
 
@@ -103,7 +105,7 @@ setup( name='redblackpy',
        author_email='hypo@intuition.engineering',
        maintainer='Intuition',
        maintainer_email='dev@intuition.engineering',
-       install_requires=['cython>=0.27'],
+       install_requires=['cython'],
        description='Data structures based on red-black trees.',
        url='https://intuitionengineeringteam.github.io/RedBlackPy/',
        download_url='https://github.com/IntuitionEngineeringTeam/RedBlackPy/archive/master.zip',
