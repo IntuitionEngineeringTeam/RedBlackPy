@@ -100,7 +100,7 @@ ext_modules=[ Extension( "redblackpy.series.tree_series",
 
 setup( name='redblackpy',
        ext_modules = cythonize(ext_modules),
-       version='0.1.2.0',
+       version='0.1.3.0',
        author='Solodskikh Kirill',
        author_email='hypo@intuition.engineering',
        maintainer='Intuition',
